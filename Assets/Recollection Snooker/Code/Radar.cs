@@ -15,9 +15,9 @@ namespace NAwakening.RecollectionSnooker
 
         #region UnityMethods
 
-        private void FixedUpdate()
+        private void Update()
         {
-            _sphereCollider.radius += 0.1f * Time.deltaTime;
+            _sphereCollider.radius += 5.0f * Time.deltaTime;
         }
 
         private void OnTriggerEnter(Collider other)

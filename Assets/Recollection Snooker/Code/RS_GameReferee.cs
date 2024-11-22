@@ -50,7 +50,7 @@ namespace NAwakening.RecollectionSnooker
         [Header("Camera References")]
         [SerializeField] protected CinemachineFreeLook tableFreeLookCamera;
         [SerializeField] protected CinemachineFreeLook targetgroupCamera;
-        [SerializeField] protected CinemachineTargetGroup targetGroup;
+        [SerializeField] protected RS_CinemachineTargetGroup targetGroup;
 
         [Header("Flags")]
         [SerializeField] protected GameObject _flag;
@@ -85,6 +85,7 @@ namespace NAwakening.RecollectionSnooker
 
         private void FixedUpdate()
         {
+            Debug.Log(_gameState);
             switch (_gameState)
             {
                 case RS_GameStates.SHOW_THE_LAYOUT_TO_THE_PLAYER:
@@ -354,7 +355,7 @@ namespace NAwakening.RecollectionSnooker
                     FinalizeFlickTokenState();
                     break;
                 case RS_GameStates.CANNON_CARGO:
-                    InitializeCanonCargoState();
+                    FinalizeCanonCargoState();
                     break;
                 case RS_GameStates.MOVE_COUNTER_BY_SANCTION:
                     FinalizeMoveCounterBySanctionState();
@@ -426,8 +427,8 @@ namespace NAwakening.RecollectionSnooker
             {
                 while (true)
                 {
-                    _tokenSpawnPosition = new Vector3(Random.Range(-20.0f, 20.0f), 0.1f, Random.Range(-20.0f, 20.0f));
-                    if (Checkposition(_tokenSpawnPosition, 0.5f))
+                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.1f, Random.Range(-15.0f, 15.0f));
+                    if (Checkposition(_tokenSpawnPosition, 0.7f))
                     {
                         cargo.gameObject.transform.position = _tokenSpawnPosition;
                         break;
@@ -466,10 +467,10 @@ namespace NAwakening.RecollectionSnooker
             {
                 cargo.StateMechanic(TokenStateMechanic.SET_SPOOKY);
             }
-            //foreach (Token monster in allMonsterPartOfTheGame)
-            //{
-            //    monster.StateMechanic(TokenStateMechanic.SET_SPOOKY);
-            //}
+            foreach (Token monster in allMonsterPartOfTheGame)
+            {
+                monster.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            }
             ship.StateMechanic(TokenStateMechanic.SET_SPOOKY);
             monsterHead.StateMechanic(TokenStateMechanic.SET_SPOOKY);
             //shipPivot.StateMechanic(TokenStateMechanic.SET_SPOOKY);
@@ -488,7 +489,7 @@ namespace NAwakening.RecollectionSnooker
                     cargo.SetHighlight(true);
                     cargo.IsAvalaibleForFlicking = true;
                 }
-                else if (ship.GetHasCrew && cargo.cargoType == CargoTypes.CREW_MEMBER)
+                if (ship.GetHasCrew && cargo.cargoType == CargoTypes.CREW_MEMBER)
                 {
                     cargo.SetHighlight(false);
                     cargo.IsAvalaibleForFlicking = false;
@@ -540,6 +541,7 @@ namespace NAwakening.RecollectionSnooker
                 cargo.SetHighlight(false);
                 cargo.IsAvalaibleForFlicking = false;
             }
+            _interactedToken.IsAvalaibleForFlicking = true;
             _uiManager.ActivateContactPointPanel();
         }
 
@@ -572,7 +574,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected void FinalizeFlickTokenState()
         {
-            _flag.transform.localRotation = Quaternion.identity;
+            _flag.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             _flag.gameObject.SetActive(false);
             foreach (Cargo cargo in allCargoOfTheGame)
             {
@@ -585,16 +587,17 @@ namespace NAwakening.RecollectionSnooker
                     cargo.StateMechanic(TokenStateMechanic.SET_PHYSICS);
                 }
             }
-            //foreach (Token monster in allMonsterPartOfTheGame)
-            //{
-            //    monster.StateMechanic(TokenStateMechanic.SET_PHYSICS);
-            //}
+            foreach (Token monster in allMonsterPartOfTheGame)
+            {
+                monster.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            }
             ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
             //shipPivot.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             _currentFreeLookCamera.Priority = 1;
             _uiManager.DeactivateFlickTokenPanel();
             _currentFreeLookCamera.gameObject.GetComponent<CinemachineMobileInputProvider>().enableCameraRig = true;
+            _interactedToken.IsAvalaibleForFlicking = false;
         }
 
         #endregion FlickToken
@@ -606,6 +609,7 @@ namespace NAwakening.RecollectionSnooker
             _currentFreeLookCamera = targetgroupCamera;
             targetGroup.AddMember(_interactedToken.gameObject.transform, 1f, 1f);
             _currentFreeLookCamera.Priority = 1000;
+            
         }
 
         protected void ExecutingCanonCargoState()
@@ -629,13 +633,10 @@ namespace NAwakening.RecollectionSnooker
 
         protected void FinalizeCanonCargoState()
         {
-            _currentFreeLookCamera.Priority = 1;
-            //for (int i = 0; i < targetGroup;i++)
-            //{
-
-            //}
-            //targetGroup.
+            Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            targetGroup.ClearTargets(); // :D
             _moveToMoveCounter = false;
+            _interactedToken = null;
         }
 
         #endregion CanonCargo
@@ -690,43 +691,41 @@ namespace NAwakening.RecollectionSnooker
             _currentFreeLookCamera.gameObject.GetComponent<CinemachineMobileInputProvider>().enableCameraRig = false;
             ship.StateMechanic(TokenStateMechanic.SET_RIGID);
             ship.cargoToLoad.IsLoaded = true;
+            ship.cargoToLoad = null;
             foreach (Cargo cargo in allCargoOfTheGame)
             {
-                
                 cargo.StateMechanic(TokenStateMechanic.SET_SPOOKY);
                 if (cargo.IsLoaded)
                 {
                     _cargoToLoad++;
+                    cargo.IsAvalaibleForFlicking = true;
+                    cargo.SetHighlight(true);
                     switch (cargo.cargoType)
                     {
                         case CargoTypes.CREW_MEMBER:
                             cargo.gameObject.transform.position = ship.GetLoadingCargoPositions[0].position;
-                            cargo.IsAvalaibleForFlicking = true;
-                            cargo.SetHighlight(true);
                             break;
                         case CargoTypes.FUEL:
                             cargo.gameObject.transform.position = ship.GetLoadingCargoPositions[1].position;
-                            cargo.IsAvalaibleForFlicking = true;
-                            cargo.SetHighlight(true);
                             break;
                         case CargoTypes.MEDICINE:
                             cargo.gameObject.transform.position = ship.GetLoadingCargoPositions[2].position;
-                            cargo.IsAvalaibleForFlicking = true;
-                            cargo.SetHighlight(true);
                             break;
                         case CargoTypes.SUPPLIES:
                             cargo.gameObject.transform.position = ship.GetLoadingCargoPositions[3].position;
-                            cargo.IsAvalaibleForFlicking = true;
-                            cargo.SetHighlight(true);
                             break;
                         case CargoTypes.SCREW_PART:
                             cargo.gameObject.transform.position = ship.GetLoadingCargoPositions[4].position;
-                            cargo.IsAvalaibleForFlicking = true;
-                            cargo.SetHighlight(true);
                             break;
                     }
                 }
             }
+            foreach (Token monster in allMonsterPartOfTheGame)
+            {
+                monster.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            }
+            monsterHead.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            //shipPivot.StateMechanic(TokenStateMechanic.SET_SPOOKY);
         }
 
         protected void ExecutingOrganizeCargoState()
@@ -749,10 +748,10 @@ namespace NAwakening.RecollectionSnooker
                     cargo.StateMechanic(TokenStateMechanic.SET_PHYSICS);
                 }
             }
-            //foreach (Token monster in allMonsterPartOfTheGame)
-            //{
-            //    monster.StateMechanic(TokenStateMechanic.SET_PHYSICS);
-            //}
+            foreach (Token monster in allMonsterPartOfTheGame)
+            {
+                monster.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            }
             ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
             //shipPivot.StateMechanic(TokenStateMechanic.SET_PHYSICS);
@@ -844,12 +843,14 @@ namespace NAwakening.RecollectionSnooker
 
         protected void InitializeShiftMonsterPartsState()
         {
+            _currentFreeLookCamera = tableFreeLookCamera;
+            _currentFreeLookCamera.Priority = 10000;
             foreach (Token monster in allMonsterPartOfTheGame)
             {
                 while (true)
                 {
-                    _tokenSpawnPosition = new Vector3(Random.Range(-20.0f, 20.0f), 0.1f, Random.Range(-20.0f, 20.0f));
-                    if (Checkposition(_tokenSpawnPosition, 1.0f))
+                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.1f, Random.Range(-15.0f, 15.0f));
+                    if (Checkposition(_tokenSpawnPosition, 2f))
                     {
                         monster.gameObject.transform.position = _tokenSpawnPosition;
                         break;
@@ -858,8 +859,8 @@ namespace NAwakening.RecollectionSnooker
             }
             while (true)
             {
-                _tokenSpawnPosition = new Vector3(Random.Range(-20.0f, 20.0f), 0.1f, Random.Range(-20.0f, 20.0f));
-                if (Checkposition(_tokenSpawnPosition, 3.0f))
+                _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.1f, Random.Range(-10.0f, 10.0f));
+                if (Checkposition(_tokenSpawnPosition, 4f))
                 {
                     monsterHead.gameObject.transform.position = _tokenSpawnPosition;
                     break;
@@ -937,7 +938,7 @@ namespace NAwakening.RecollectionSnooker
             get { return _flag; }
         }
 
-        public CinemachineTargetGroup GetTargetGroup
+        public RS_CinemachineTargetGroup GetTargetGroup
         {
             get { return targetGroup; }
 

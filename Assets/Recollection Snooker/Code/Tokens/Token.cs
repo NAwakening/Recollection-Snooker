@@ -120,7 +120,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected virtual void ValidateTriggerWithFlag(Collider other)
         {
-            if (this as Cargo || this as ShipPivot)
+            if ((this as Cargo || this as ShipPivot) && IsAvalaibleForFlicking)
             {
                 if (other.gameObject.CompareTag("Flag"))
                 {
@@ -128,7 +128,7 @@ namespace NAwakening.RecollectionSnooker
                     _flagTransformValues.forward = _flagTransform.forward;
                     _flagTransformValues.position = _flagTransform.position;
                     _flagTransformValues.Rotate(_flagTransformValues.right, -90f, Space.Self);
-                    _tokenPhysicalFSM.ThrowTokenAtSpecifcPosition(_flagTransformValues.forward * (Mathf.Abs(_contactedFlag.DeltaXDegrees + 1f) * 3.0f), other.gameObject.transform.position);
+                    _tokenPhysicalFSM.ThrowTokenAtSpecifcPosition(_flagTransformValues.forward * (Mathf.Abs(_contactedFlag.DeltaXDegrees + 1f) * 5.0f), other.gameObject.transform.position);
 
                     if (this as Cargo)
                     {

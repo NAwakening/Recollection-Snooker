@@ -45,6 +45,16 @@ namespace NAwakening.RecollectionSnooker
             _flickTokenPanel.SetActive(false);
         }
 
+        public void LoadScene(int sceneId)
+        {
+            LoadScene(sceneId);
+        }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
+
         #endregion
     }
 }

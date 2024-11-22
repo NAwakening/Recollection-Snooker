@@ -85,6 +85,9 @@ namespace NAwakening.RecollectionSnooker
         {
             switch (_gameReferee.GetGameState)
             {
+                case RS_GameStates.FLICK_TOKEN:
+                    ValidateTriggerWithFlag(other);
+                    break;
                 case RS_GameStates.CANNON_CARGO:
                     ValidateTriggerInCannon(other);
                     break;

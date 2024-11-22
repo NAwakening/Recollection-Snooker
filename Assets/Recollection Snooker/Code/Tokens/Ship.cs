@@ -24,7 +24,7 @@ namespace NAwakening.RecollectionSnooker
 
         #region References
 
-        protected Transform[] _loadingCargoPositions;
+        [SerializeField] protected Transform[] _loadingCargoPositions;
 
         #endregion
 

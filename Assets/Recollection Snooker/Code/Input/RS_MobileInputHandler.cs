@@ -21,7 +21,7 @@ namespace NAwakening.RecollectionSnooker
         protected RaycastHit _raycastHit;
         protected Token _chosenToken;
         protected Token _contactToken;
-        protected bool _movingToken;
+        protected bool _movingToken, _canBeLeft;
 
         #endregion
 
@@ -160,14 +160,22 @@ namespace NAwakening.RecollectionSnooker
                     if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()), out _raycastHit, 20.0f, LayerMask.GetMask("ShipLoad")))
                     {
                         _chosenToken.gameObject.transform.position = _raycastHit.point;
+                        _canBeLeft = true;
+                    }
+                    else
+                    {
+                        _canBeLeft = false;
                     }
                 }
             }
             else if (value.canceled)
             {
-                if (_movingToken) 
+                if (_movingToken && _canBeLeft) 
                 { 
                     _movingToken = false;
+                    _canBeLeft = false;
+                    _chosenToken.IsAvalaibleForFlicking = false;
+                    _chosenToken.StateMechanic(TokenStateMechanic.SET_PHYSICS);
                     _gameReferee.CargoLoaded();
                 }
             }
