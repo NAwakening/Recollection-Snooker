@@ -152,6 +152,7 @@ namespace NAwakening.RecollectionSnooker
                         if (_chosenToken.IsAvalaibleForFlicking)
                         {
                             _movingToken = true;
+                            _chosenToken.SetHighlight(true);
                         }
                     }
                 }
@@ -176,6 +177,7 @@ namespace NAwakening.RecollectionSnooker
                     _canBeLeft = false;
                     _chosenToken.IsAvalaibleForFlicking = false;
                     _chosenToken.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+                    _chosenToken.SetHighlight(false);
                     _gameReferee.CargoLoaded();
                 }
             }

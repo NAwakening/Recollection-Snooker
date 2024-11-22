@@ -633,7 +633,6 @@ namespace NAwakening.RecollectionSnooker
 
         protected void FinalizeCanonCargoState()
         {
-            Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
             targetGroup.ClearTargets(); // :D
             _moveToMoveCounter = false;
             _interactedToken = null;
@@ -686,6 +685,8 @@ namespace NAwakening.RecollectionSnooker
 
         protected void InitializeOrganizeCargoState()
         {
+            //resetear la rotacion en x y z de la ship
+            // volver la rotación de los tokens igual a la rotacción del barco
             _currentFreeLookCamera = ship.GetFreeLookCamera;
             _currentFreeLookCamera.Priority = 1000;
             _currentFreeLookCamera.gameObject.GetComponent<CinemachineMobileInputProvider>().enableCameraRig = false;
@@ -699,7 +700,6 @@ namespace NAwakening.RecollectionSnooker
                 {
                     _cargoToLoad++;
                     cargo.IsAvalaibleForFlicking = true;
-                    cargo.SetHighlight(true);
                     switch (cargo.cargoType)
                     {
                         case CargoTypes.CREW_MEMBER:
