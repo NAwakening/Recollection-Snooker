@@ -53,10 +53,39 @@ namespace NAwakening.RecollectionSnooker
             #endif
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            ValidateTrigger(other);
+        }
+
         #endregion
 
         #region RuntimeMethods
 
+        protected override void ValidateTrigger(Collider other)
+        {
+            switch (_gameReferee.GetGameState)
+            {
+                case RS_GameStates.FLICK_TOKEN:
+                    ValidateTriggerWithFlag(other);
+                    break;
+                case RS_GameStates.CANNON_BY_NAVIGATION:
+                    ValidateTriggerInCannonNavigation(other);
+                    break;
+            }
+        }
+
+        protected override void ValidateTriggerInCannonNavigation(Collider other)
+        {
+            if (other.gameObject.CompareTag("Island"))
+            {
+                _gameReferee.MoveToLeaveCargoAtIsland = true;
+            }
+            else if (other.gameObject.GetComponent<Token>() != null)
+            {
+                _gameReferee.GetTargetGroup.AddMember(other.gameObject.transform, 1f, 1f);
+            }
+        }
 
         #endregion
 

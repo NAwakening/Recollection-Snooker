@@ -143,9 +143,14 @@ namespace NAwakening.RecollectionSnooker
             }
         }
 
-        protected virtual void ValidateTriggerInCannon(Collider other)
+        protected virtual void ValidateTriggerInCannonCargo(Collider other)
         {
             
+        }
+
+        protected virtual void ValidateTriggerInCannonNavigation(Collider other)
+        {
+
         }
 
         #endregion

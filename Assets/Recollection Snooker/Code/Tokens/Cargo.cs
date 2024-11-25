@@ -89,12 +89,15 @@ namespace NAwakening.RecollectionSnooker
                     ValidateTriggerWithFlag(other);
                     break;
                 case RS_GameStates.CANNON_CARGO:
-                    ValidateTriggerInCannon(other);
+                    ValidateTriggerInCannonCargo(other);
+                    break;
+                case RS_GameStates.CANNON_BY_NAVIGATION:
+                    ValidateTriggerInCannonNavigation(other); 
                     break;
             }
         }
 
-        protected override void ValidateTriggerInCannon(Collider other)
+        protected override void ValidateTriggerInCannonCargo(Collider other)
         {
             if (!isLoaded)
             {
@@ -105,6 +108,21 @@ namespace NAwakening.RecollectionSnooker
                 else if (other.gameObject.CompareTag("Player"))
                 {
                     _gameReferee.SetMoveToOrganizeCargo = true;
+                }
+                else if (other.gameObject.GetComponent<Token>() != null)
+                {
+                    _gameReferee.GetTargetGroup.AddMember(other.gameObject.transform, 1f, 1f);
+                }
+            }
+        }
+
+        protected override void ValidateTriggerInCannonNavigation(Collider other)
+        {
+            if (!isLoaded)
+            {
+                if (other.gameObject.CompareTag("MonsterLimb"))
+                {
+                    _gameReferee.SetMoveToMoveCounter = true;
                 }
                 else if (other.gameObject.GetComponent<Token>() != null)
                 {
@@ -130,6 +148,7 @@ namespace NAwakening.RecollectionSnooker
         public bool IsOnIsland
         {
             get { return isOnIsland; }
+            set { isOnIsland = value; }
         }
 
         #endregion

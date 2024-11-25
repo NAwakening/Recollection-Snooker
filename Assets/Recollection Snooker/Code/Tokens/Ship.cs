@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -25,6 +26,7 @@ namespace NAwakening.RecollectionSnooker
         #region References
 
         [SerializeField] protected Transform[] _loadingCargoPositions;
+        [SerializeField] protected CinemachineVirtualCameraBase _virtualCamera;
 
         #endregion
 
@@ -54,17 +56,30 @@ namespace NAwakening.RecollectionSnooker
             #endif
         }
 
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.GetComponent<Cargo>() != null && other.GetComponent<Cargo>().IsLoaded)
+            {
+                other.GetComponent<Cargo>().IsLoaded= false;
+                EliminateCargo(other.GetComponent<Cargo>());
+            }
+        }
+
+        #endregion
+
+        #region RuntimeMethods
+
         protected override void ValidateTrigger(Collider other)
         {
             switch (_gameReferee.GetGameState)
             {
                 case RS_GameStates.CANNON_CARGO:
-                    ValidateTriggerInCannon(other);
+                    ValidateTriggerInCannonCargo(other);
                     break;
             }
         }
 
-        protected override void ValidateTriggerInCannon(Collider other)
+        protected override void ValidateTriggerInCannonCargo(Collider other)
         {
             if (other.GetComponent<Cargo>() != null && !other.GetComponent<Cargo>().IsLoaded)
             {
@@ -77,12 +92,51 @@ namespace NAwakening.RecollectionSnooker
 
         #endregion
 
-        #region RuntimeMethods
-
-
-        #endregion
-
         #region PublicMethods
+
+        public void EliminateCargo(Cargo cargo)
+        {
+            switch (cargo.cargoType)
+            {
+                case CargoTypes.CREW_MEMBER:
+                    _hasCrew = false;
+                    break;
+                case CargoTypes.FUEL:
+                    _hasFuel = false;
+                    break;
+                case CargoTypes.MEDICINE:
+                    _hasMedicine = false;
+                    break;
+                case CargoTypes.SCREW_PART:
+                    _hasScrew = false;
+                    break;
+                case CargoTypes.SUPPLIES:
+                    _hasSupplies = false;
+                    break;
+            }
+        }
+
+        public void AddCargo(Cargo cargo)
+        {
+            switch (cargo.cargoType)
+            {
+                case CargoTypes.CREW_MEMBER:
+                    _hasCrew = true;
+                    break;
+                case CargoTypes.FUEL:
+                    _hasFuel = true;
+                    break;
+                case CargoTypes.MEDICINE:
+                    _hasMedicine = true;
+                    break;
+                case CargoTypes.SCREW_PART:
+                    _hasScrew = true;
+                    break;
+                case CargoTypes.SUPPLIES:
+                    _hasSupplies = true;
+                    break;
+            }
+        }
 
         #endregion
 
@@ -116,6 +170,11 @@ namespace NAwakening.RecollectionSnooker
         public Transform[] GetLoadingCargoPositions
         {
             get { return _loadingCargoPositions; }
+        }
+
+        public CinemachineVirtualCameraBase GetVirtualCamera
+        {
+            get { return _virtualCamera; }
         }
 
         #endregion

@@ -11,6 +11,7 @@ namespace NAwakening.RecollectionSnooker
         #region Parameters
 
         public bool enableCameraRig;
+        public bool enableVerticalMovement;
 
         #endregion
 
@@ -23,12 +24,25 @@ namespace NAwakening.RecollectionSnooker
                 var action = ResolveForPlayer(axis, axis == 2 ? ZAxis : XYAxis);
                 if (action != null)
                 {
-                    switch (axis)
+                    if (enableVerticalMovement)
                     {
-                        case 0: return action.ReadValue<Vector3>().y;
-                        case 1: return action.ReadValue<Vector3>().x;
-                        case 2: return action.ReadValue<float>();
+                        switch (axis)
+                        {
+                            case 0: return action.ReadValue<Vector3>().y;
+                            case 1: return action.ReadValue<Vector3>().x;
+                            case 2: return action.ReadValue<float>();
+                        }
                     }
+                    else
+                    {
+                        switch (axis)
+                        {
+                            case 0: return action.ReadValue<float>();
+                            case 1: return action.ReadValue<Vector3>().x;
+                            case 2: return action.ReadValue<float>();
+                        }
+                    }
+                    
                 }
             }
             return 0;
