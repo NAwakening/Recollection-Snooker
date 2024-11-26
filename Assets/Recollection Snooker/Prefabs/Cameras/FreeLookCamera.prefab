@@ -191,6 +191,7 @@ MonoBehaviour:
   XYAxis: {fileID: -4078880178461150209, guid: 5c67aa3c75fc65742b43141956b8fcfc, type: 3}
   ZAxis: {fileID: 0}
   enableCameraRig: 1
+  enableVerticalMovement: 1
 --- !u!1 &4829217515572773179
 GameObject:
   m_ObjectHideFlags: 0

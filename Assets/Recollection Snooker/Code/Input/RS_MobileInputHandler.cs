@@ -187,22 +187,17 @@ namespace NAwakening.RecollectionSnooker
         {
             if (value.performed)
             {
-                if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()), out _raycastHit, 50.0f, LayerMask.GetMask("Token")))
+                
+            }
+            else if (value.canceled)
+            {
+                if (_gameReferee.MoveToLeaveCargoAtIsland)
                 {
-                    _contactToken = _raycastHit.collider.gameObject.GetComponent<Token>();
-                    if (_contactToken == _chosenToken)
-                    {
-                        _goTouchCursor.SetActive(true);
-                        _goTouchCursor.transform.position = _raycastHit.point;
-                        if (_gameReferee.MoveToLeaveCargoAtIsland)
-                        {
-                            _gameReferee.GameStateMechanic(RS_GameStates.LEAVE_CARGO_AT_ISLAND);
-                        }
-                        else
-                        {
-                            _gameReferee.GameStateMechanic(RS_GameStates.SHIFT_MONSTER_PARTS);
-                        }
-                    }
+                    _gameReferee.GameStateMechanic(RS_GameStates.LEAVE_CARGO_AT_ISLAND);
+                }
+                else
+                {
+                    _gameReferee.GameStateMechanic(RS_GameStates.SHIFT_MONSTER_PARTS);
                 }
             }
         }

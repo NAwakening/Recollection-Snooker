@@ -17,7 +17,7 @@ namespace NAwakening.RecollectionSnooker
 
         private void Update()
         {
-            _sphereCollider.radius += 5.0f * Time.deltaTime;
+            _sphereCollider.radius += 7.0f * Time.deltaTime;
         }
 
         private void OnTriggerEnter(Collider other)

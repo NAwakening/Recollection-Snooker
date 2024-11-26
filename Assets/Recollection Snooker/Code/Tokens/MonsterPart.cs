@@ -34,7 +34,7 @@ namespace NAwakening.RecollectionSnooker
 
         #region RuntimeVariables
 
-        protected Vector3 _pushDirection;
+        protected bool _startLerp;
 
         #endregion
 
@@ -45,9 +45,26 @@ namespace NAwakening.RecollectionSnooker
             base.InitializeToken();
         }
 
-        void Update()
+        void FixedUpdate()
         {
-
+            if (_startLerp)
+            {
+                transform.position = Vector3.Lerp(transform.position, new Vector3 (transform.position.x, transform.position.y - 5, transform.position.z), _lerpVelocity * Time.fixedDeltaTime);
+                if (Vector3.SqrMagnitude(transform.position - new Vector3(transform.position.x, - 5, transform.position.z)) < 0.1f)
+                {
+                    _canLerp = true;
+                    transform.position = new Vector3(_lerpPosition.x, _lerpPosition.y - 5, _lerpPosition.z);
+                    _startLerp = false;
+                }
+            }
+            if (_canLerp)
+            {
+                transform.position = Vector3.Lerp(transform.position, _lerpPosition, _lerpVelocity * Time.fixedDeltaTime);
+                if (Vector3.SqrMagnitude(transform.position - _lerpPosition) < 0.1f)
+                {
+                    _canLerp = false;
+                }
+            }
         }
 
         private void OnDrawGizmos()
@@ -69,6 +86,11 @@ namespace NAwakening.RecollectionSnooker
         #endregion
 
         #region GettersSetters
+
+        public bool StartLerp
+        {
+            set { _startLerp = value; }
+        }
 
         #endregion
     }

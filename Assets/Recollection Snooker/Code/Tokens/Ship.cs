@@ -20,6 +20,7 @@ namespace NAwakening.RecollectionSnooker
     {
         #region Knobs
 
+        
 
         #endregion
 
@@ -34,6 +35,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected bool _hasCrew, _hasScrew, _hasFuel, _hasMedicine, _hasSupplies;
         public Cargo cargoToLoad;
+        
 
         #endregion
 
@@ -44,9 +46,17 @@ namespace NAwakening.RecollectionSnooker
             base.InitializeToken();
         }
 
-        void Update()
+        void FixedUpdate()
         {
-
+            if (_canLerp)
+            {
+                transform.position = Vector3.Lerp(transform.position, _lerpPosition, _lerpVelocity * Time.fixedDeltaTime);
+                if (Vector3.SqrMagnitude(transform.position - _lerpPosition) < 2)
+                {
+                    _gameReferee.GameStateMechanic(RS_GameStates.ANCHOR_SHIP);
+                    _canLerp = false;
+                }
+            }
         }
 
         private void OnDrawGizmos()
@@ -136,6 +146,11 @@ namespace NAwakening.RecollectionSnooker
                     _hasSupplies = true;
                     break;
             }
+        }
+
+        public virtual void Navigate()
+        {
+
         }
 
         #endregion

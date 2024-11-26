@@ -45,6 +45,7 @@ namespace NAwakening.RecollectionSnooker
 
         [Header("Runtime Variables")]
         [SerializeField] protected bool isLoaded, isOnIsland;
+        
 
         #endregion
 
@@ -55,9 +56,17 @@ namespace NAwakening.RecollectionSnooker
             base.InitializeToken();
         }
 
-        void Update()
+        void FixedUpdate()
         {
-
+            if (_canLerp)
+            {
+                transform.position = Vector3.Lerp(transform.position, _lerpPosition, _lerpVelocity * Time.fixedDeltaTime);
+                if (Vector3.SqrMagnitude(transform.position - _lerpPosition) < 0.1f)
+                {
+                    Debug.Log("finalizeLerp");
+                    _canLerp = false;
+                }
+            }
         }
 
         //private void OnCollisionEnter(Collision other)

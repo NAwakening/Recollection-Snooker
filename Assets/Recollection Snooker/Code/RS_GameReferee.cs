@@ -283,6 +283,22 @@ namespace NAwakening.RecollectionSnooker
                     break;
                 }
             }
+            foreach (MonsterPart monster in allMonsterPartOfTheGame)
+            {
+                if (!monster.IsStill)
+                {
+                    _isAllCargoStill = false; 
+                    break;
+                }
+            }
+            if (!ship.IsStill)
+            {
+                _isAllCargoStill = false;
+            }
+            if (!shipPivot.IsStill)
+            {
+                _isAllCargoStill = false;
+            }
             return _isAllCargoStill;
         }
 
@@ -438,16 +454,18 @@ namespace NAwakening.RecollectionSnooker
         {
             foreach (Token cargo in allCargoOfTheGame)
             {
+                cargo.StateMechanic(TokenStateMechanic.SET_SPOOKY);
                 while (true)
                 {
-                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.1f, Random.Range(-15.0f, 15.0f));
+                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.2f, Random.Range(-15.0f, 15.0f));
                     if (Checkposition(_tokenSpawnPosition, 0.7f))
                     {
-                        cargo.gameObject.transform.position = _tokenSpawnPosition;
+                        cargo.gameObject.transform.position = new Vector3 (_tokenSpawnPosition.x, _tokenSpawnPosition.y -5, _tokenSpawnPosition.z);
+                        cargo.SetLerpPosition = _tokenSpawnPosition;
+                        cargo.SetCanLerp = true;
                         break;
                     }
                 }
-                cargo.StateMechanic(TokenStateMechanic.SET_SPOOKY);
             }
             
             ChangeCameraTo(tableFreeLookCamera);
@@ -809,6 +827,8 @@ namespace NAwakening.RecollectionSnooker
                 }
             }
             ship.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            ship.SetLerpPosition = shipPivot.gameObject.transform.position;
+            ship.SetCanLerp = true;
         }
 
         protected void ExecutingNavigatingShipState()
@@ -819,7 +839,6 @@ namespace NAwakening.RecollectionSnooker
         protected void FinalizeNavigatingShipState()
         {
             _moveToNavigatingShip = false;
-            
         }
 
         #endregion NavigatingShip
@@ -872,19 +891,24 @@ namespace NAwakening.RecollectionSnooker
                     //switch (cargo.cargoType)
                     //{
                     //    case CargoTypes.CREW_MEMBER:
-                    //        cargo.gameObject.transform.position = island.GetLoadingCargoPositions[0].position;
+                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[0]);
+                    //        cargo.SetCanLerp = true;
                     //        break;
                     //    case CargoTypes.FUEL:
-                    //        cargo.gameObject.transform.position = island.GetLoadingCargoPositions[1].position;
+                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[1]);
+                    //        cargo.SetCanLerp = true;
                     //        break;
                     //    case CargoTypes.MEDICINE:
-                    //        cargo.gameObject.transform.position = island.GetLoadingCargoPositions[2].position;
+                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[2]);
+                    //        cargo.SetCanLerp = true;
                     //        break;
                     //    case CargoTypes.SUPPLIES:
-                    //        cargo.gameObject.transform.position = island.GetLoadingCargoPositions[3].position;
+                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[3]);
+                    //        cargo.SetCanLerp = true;
                     //        break;
                     //    case CargoTypes.SCREW_PART:
-                    //        cargo.gameObject.transform.position = island.GetLoadingCargoPositions[4].position;
+                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[4]);
+                    //        cargo.SetCanLerp = true;
                     //        break;
                     //}
                 }
@@ -916,26 +940,27 @@ namespace NAwakening.RecollectionSnooker
 
         protected void InitializeShiftMonsterPartsState()
         {
-            _currentVirtualCamera = tableFreeLookCamera;
-            _currentVirtualCamera.Priority = 10000;
-            foreach (Token monster in allMonsterPartOfTheGame)
+            ChangeCameraTo(tableFreeLookCamera);
+            foreach (MonsterPart monster in allMonsterPartOfTheGame)
             {
                 while (true)
                 {
-                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.1f, Random.Range(-15.0f, 15.0f));
+                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.2f, Random.Range(-15.0f, 15.0f));
                     if (Checkposition(_tokenSpawnPosition, 2f))
                     {
-                        monster.gameObject.transform.position = _tokenSpawnPosition;
+                        monster.SetLerpPosition = _tokenSpawnPosition;
+                        monster.StartLerp = true;
                         break;
                     }
                 }
             }
             while (true)
             {
-                _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.1f, Random.Range(-10.0f, 10.0f));
+                _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.2f, Random.Range(-10.0f, 10.0f));
                 if (Checkposition(_tokenSpawnPosition, 4f))
                 {
-                    monsterHead.gameObject.transform.position = _tokenSpawnPosition;
+                    monsterHead.SetLerpPosition = _tokenSpawnPosition;
+                    monsterHead.StartLerp = true;
                     break;
                 }
             }
@@ -1031,11 +1056,6 @@ namespace NAwakening.RecollectionSnooker
         {
             set { _moveToLeaveCargoAtIsland = value; }
             get { return _moveToLeaveCargoAtIsland;}
-        }
-
-        public ShipPivot GetShipPivot
-        {
-            get { return shipPivot; }
         }
 
         #endregion

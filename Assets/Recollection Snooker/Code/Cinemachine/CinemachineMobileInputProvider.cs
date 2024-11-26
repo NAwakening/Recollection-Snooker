@@ -24,25 +24,12 @@ namespace NAwakening.RecollectionSnooker
                 var action = ResolveForPlayer(axis, axis == 2 ? ZAxis : XYAxis);
                 if (action != null)
                 {
-                    if (enableVerticalMovement)
+                    switch (axis)
                     {
-                        switch (axis)
-                        {
-                            case 0: return action.ReadValue<Vector3>().y;
-                            case 1: return action.ReadValue<Vector3>().x;
-                            case 2: return action.ReadValue<float>();
-                        }
+                        case 0: return enableVerticalMovement ? action.ReadValue<Vector3>().y : 0f;
+                        case 1: return action.ReadValue<Vector3>().x;
+                        case 2: return action.ReadValue<float>();
                     }
-                    else
-                    {
-                        switch (axis)
-                        {
-                            case 0: return action.ReadValue<float>();
-                            case 1: return action.ReadValue<Vector3>().x;
-                            case 2: return action.ReadValue<float>();
-                        }
-                    }
-                    
                 }
             }
             return 0;

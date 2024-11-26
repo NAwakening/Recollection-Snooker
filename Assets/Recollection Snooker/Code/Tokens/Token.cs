@@ -28,12 +28,13 @@ namespace NAwakening.RecollectionSnooker
     {
         #region Knobs
 
+        [SerializeField] protected float _lerpVelocity;
 
         #endregion
 
         #region References
 
-        [SerializeField,HideInInspector] protected RS_TokenFiniteStateMachine _tokenPhysicalFSM;
+        [SerializeField, HideInInspector] protected RS_TokenFiniteStateMachine _tokenPhysicalFSM;
         [SerializeField] protected CinemachineFreeLook _freeLookCamera;
         [SerializeField] protected RS_GameReferee _gameReferee;
         [SerializeField] protected Transform _flagTransformValues;
@@ -47,6 +48,8 @@ namespace NAwakening.RecollectionSnooker
 
         protected Transform _flagTransform;
         [SerializeField] protected Flag _contactedFlag;
+        protected bool _canLerp;
+        protected Vector3 _lerpPosition;
 
         #endregion
 
@@ -185,6 +188,16 @@ namespace NAwakening.RecollectionSnooker
         public CinemachineFreeLook GetFreeLookCamera
         {
             get { return _freeLookCamera; }
+        }
+
+        public bool SetCanLerp
+        {
+            set { _canLerp = value; }
+        }
+
+        public Vector3 SetLerpPosition
+        {
+            set { _lerpPosition = value; }
         }
 
         #endregion
