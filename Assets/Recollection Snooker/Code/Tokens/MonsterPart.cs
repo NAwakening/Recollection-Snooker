@@ -30,6 +30,8 @@ namespace NAwakening.RecollectionSnooker
 
         #region References
 
+        [SerializeField] protected Transform _phantomCopy;
+
         #endregion
 
         #region RuntimeVariables
@@ -82,6 +84,12 @@ namespace NAwakening.RecollectionSnooker
         #endregion
 
         #region PublicMethods
+
+        public void SetPhantomCopy()
+        {
+            _phantomCopy.position = _lerpPosition;
+            _phantomCopy.localRotation = transform.localRotation;
+        }
 
         #endregion
 

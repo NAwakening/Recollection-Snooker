@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace NAwakening.RecollectionSnooker
 {
@@ -10,6 +12,13 @@ namespace NAwakening.RecollectionSnooker
 
         [SerializeField] protected RS_GameReferee _gameReferee;
         [SerializeField] protected GameObject _contactpointPanel, _flickTokenPanel;
+        [SerializeField] protected RawImage[] hearts;
+
+        #endregion
+
+        #region RuntimeVariables
+
+        protected int heartid;
 
         #endregion
 
@@ -45,9 +54,15 @@ namespace NAwakening.RecollectionSnooker
             _flickTokenPanel.SetActive(false);
         }
 
-        public void LoadScene(int sceneId)
+        public void ReloadScene(int sceneId)
         {
-            LoadScene(sceneId);
+            SceneManager.LoadScene(sceneId);
+        }
+
+        public void HeartLost()
+        {
+            hearts[heartid].color = Color.black;
+            heartid++;
         }
 
         public void Quit()

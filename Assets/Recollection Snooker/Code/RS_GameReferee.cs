@@ -52,6 +52,7 @@ namespace NAwakening.RecollectionSnooker
         [SerializeField] protected CinemachineFreeLook tableFreeLookCamera;
         [SerializeField] protected CinemachineFreeLook targetgroupCamera;
         [SerializeField] protected RS_CinemachineTargetGroup targetGroup;
+        [SerializeField] protected Transform cameraTransform;
 
         [Header("Flags")]
         [SerializeField] protected GameObject _flag;
@@ -295,10 +296,10 @@ namespace NAwakening.RecollectionSnooker
             {
                 _isAllCargoStill = false;
             }
-            if (!shipPivot.IsStill)
-            {
-                _isAllCargoStill = false;
-            }
+            //if (!shipPivot.IsStill)
+            //{
+            //    _isAllCargoStill = false;
+            //}
             return _isAllCargoStill;
         }
 
@@ -408,7 +409,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected bool Checkposition(Vector3 position, float radius)
         {
-            if (Physics.SphereCast(new Vector3(position.x, position.y + 5.0f, position.z), radius, -transform.up ,out _rayCastHit, 5.0f))
+            if (Physics.SphereCast(new Vector3(position.x, position.y + 5.0f, position.z), radius, -transform.up ,out _rayCastHit, 11.0f))
             {
                 if(_rayCastHit.collider.gameObject.GetComponent<Token>() != null)
                 {
@@ -457,7 +458,7 @@ namespace NAwakening.RecollectionSnooker
                 cargo.StateMechanic(TokenStateMechanic.SET_SPOOKY);
                 while (true)
                 {
-                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.2f, Random.Range(-15.0f, 15.0f));
+                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.3f, Random.Range(-15.0f, 15.0f));
                     if (Checkposition(_tokenSpawnPosition, 0.7f))
                     {
                         cargo.gameObject.transform.position = new Vector3 (_tokenSpawnPosition.x, _tokenSpawnPosition.y -5, _tokenSpawnPosition.z);
@@ -851,7 +852,8 @@ namespace NAwakening.RecollectionSnooker
             _currentVirtualCamera.gameObject.GetComponent<CinemachineMobileInputProvider>().enableVerticalMovement = false;
             _TokenCamera = (CinemachineFreeLook)_currentVirtualCamera;
             _TokenCamera.m_YAxis.Value = 0.0f;
-            ship.transform.position = _flag.transform.position;
+            ship.transform.parent = cameraTransform;
+            ship.transform.position = new Vector3(3.61972f, 0f, 0f);
         }
 
         protected void ExecutingAnchorShipState()
@@ -870,6 +872,7 @@ namespace NAwakening.RecollectionSnooker
                 }
             }
             ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            ship.transform.parent = null;
         }
 
         #endregion AnchorShip
@@ -945,10 +948,11 @@ namespace NAwakening.RecollectionSnooker
             {
                 while (true)
                 {
-                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.2f, Random.Range(-15.0f, 15.0f));
+                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.3f, Random.Range(-15.0f, 15.0f));
                     if (Checkposition(_tokenSpawnPosition, 2f))
                     {
                         monster.SetLerpPosition = _tokenSpawnPosition;
+                        monster.SetPhantomCopy();
                         monster.StartLerp = true;
                         break;
                     }
@@ -956,10 +960,11 @@ namespace NAwakening.RecollectionSnooker
             }
             while (true)
             {
-                _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.2f, Random.Range(-10.0f, 10.0f));
+                _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.3f, Random.Range(-10.0f, 10.0f));
                 if (Checkposition(_tokenSpawnPosition, 4f))
                 {
                     monsterHead.SetLerpPosition = _tokenSpawnPosition;
+                    monsterHead.SetPhantomCopy();
                     monsterHead.StartLerp = true;
                     break;
                 }
@@ -983,7 +988,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected void InitializeVictoryState()
         {
-
+            _uiManager.ReloadScene(2);
         }
 
         protected void ExecutingVictoryState()
@@ -1002,7 +1007,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected void InitializeFailureState()
         {
-
+            _uiManager.ReloadScene(3);
         }
 
         protected void ExecutingFailureState()
