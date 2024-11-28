@@ -87,7 +87,7 @@ namespace NAwakening.RecollectionSnooker
 
         public void SetPhantomCopy()
         {
-            _phantomCopy.position = _lerpPosition;
+            _phantomCopy.position = new Vector3 (_lerpPosition.x, _lerpPosition.y - 5, _lerpPosition.z);
             _phantomCopy.localRotation = transform.localRotation;
         }
 

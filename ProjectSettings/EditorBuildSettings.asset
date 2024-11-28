@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Recollection Snooker/Scenes/Defeat.unity
     guid: 251c0fe79239e814c853498828ee9148
+  - enabled: 1
+    path: Assets/Recollection Snooker/Scenes/Credits.unity
+    guid: 013eea0f53b4a214e8ed436ee32293a1
   m_configObjects: {}

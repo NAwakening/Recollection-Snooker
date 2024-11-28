@@ -409,7 +409,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected bool Checkposition(Vector3 position, float radius)
         {
-            if (Physics.SphereCast(new Vector3(position.x, position.y + 5.0f, position.z), radius, -transform.up ,out _rayCastHit, 11.0f))
+            if (Physics.SphereCast(new Vector3(position.x, position.y + 5.0f, position.z), radius, -transform.up ,out _rayCastHit, 5.0f))
             {
                 if(_rayCastHit.collider.gameObject.GetComponent<Token>() != null)
                 {
@@ -417,7 +417,21 @@ namespace NAwakening.RecollectionSnooker
                 }
                 else
                 {
-                    return true;
+                    if (Physics.SphereCast(new Vector3(position.x, position.y - 7.0f, position.z), radius, transform.up, out _rayCastHit, 7.0f))
+                    {
+                        if (_rayCastHit.collider.CompareTag("Phantom"))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
             }
             else
@@ -599,6 +613,16 @@ namespace NAwakening.RecollectionSnooker
         {
             _flag.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             _flag.gameObject.SetActive(false);
+            _uiManager.DeactivateFlickTokenPanel();
+            _currentVirtualCamera.gameObject.GetComponent<CinemachineMobileInputProvider>().enableCameraRig = true;
+        }
+
+        #endregion FlickToken
+
+        #region CanonCargo
+
+        protected void InitializeCanonCargoState()
+        {
             foreach (Cargo cargo in allCargoOfTheGame)
             {
                 if (cargo.IsOnIsland)
@@ -618,17 +642,7 @@ namespace NAwakening.RecollectionSnooker
             monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
             //island.StateMechanic(TokenStateMechanic.SET_RIGID);
             //shipPivot.StateMechanic(TokenStateMechanic.SET_PHYSICS);
-            _uiManager.DeactivateFlickTokenPanel();
-            _currentVirtualCamera.gameObject.GetComponent<CinemachineMobileInputProvider>().enableCameraRig = true;
             _interactedToken.IsAvalaibleForFlicking = false;
-        }
-
-        #endregion FlickToken
-
-        #region CanonCargo
-
-        protected void InitializeCanonCargoState()
-        {
             ChangeCameraTo(targetgroupCamera);
             targetGroup.AddMember(_interactedToken.gameObject.transform, 1f, 1f);
         }
@@ -869,6 +883,7 @@ namespace NAwakening.RecollectionSnooker
                 if (cargo.IsLoaded)
                 {
                     cargo.transform.parent = _cargoParent;
+                    cargo.StateMechanic(TokenStateMechanic.SET_PHYSICS);
                 }
             }
             ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);

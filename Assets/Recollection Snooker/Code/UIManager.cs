@@ -12,13 +12,15 @@ namespace NAwakening.RecollectionSnooker
 
         [SerializeField] protected RS_GameReferee _gameReferee;
         [SerializeField] protected GameObject _contactpointPanel, _flickTokenPanel;
-        [SerializeField] protected RawImage[] hearts;
+        [SerializeField] protected RawImage[] _hearts;
+        [SerializeField] protected GameObject _pausePanel, _pauseButton;
 
         #endregion
 
         #region RuntimeVariables
 
-        protected int heartid;
+        protected int _heartid;
+        protected bool _pause;
 
         #endregion
 
@@ -32,6 +34,24 @@ namespace NAwakening.RecollectionSnooker
         public void ReturnToContactPoint()
         {
             _gameReferee.GameStateMechanic(RS_GameStates.CONTACT_POINT_TOKEN);
+        }
+
+        public void Pause()
+        {
+            if (!_pause)
+            {
+                _pause = true;
+                _pausePanel.SetActive(true);
+                _pauseButton.SetActive(false);
+                Time.timeScale = 0.0f;
+            }
+            else
+            {
+                _pause = false;
+                _pausePanel.SetActive(false);
+                _pauseButton.SetActive(true);
+                Time.timeScale = 1.0f;
+            }
         }
 
         public void ActivateContactPointPanel()
@@ -61,8 +81,8 @@ namespace NAwakening.RecollectionSnooker
 
         public void HeartLost()
         {
-            hearts[heartid].color = Color.black;
-            heartid++;
+            _hearts[_heartid].color = Color.black;
+            _heartid++;
         }
 
         public void Quit()
