@@ -28,6 +28,10 @@ PrefabInstance:
       propertyPath: materialAssets.highlightPhysicalMaterial
       value: 
       objectReference: {fileID: 2100000, guid: ef4736ed6d1b79e4eb08623e9b6aa136, type: 2}
+    - target: {fileID: 4666169921966714433, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 8524874503923877264, guid: 9de4d048d6b571c4e8219aa60583f21f, type: 3}
     - target: {fileID: 4697344698952574328, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -76,6 +80,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScrewPart
       objectReference: {fileID: 0}
+    - target: {fileID: 7132250596572325218, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 8524874503923877264, guid: 9de4d048d6b571c4e8219aa60583f21f, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

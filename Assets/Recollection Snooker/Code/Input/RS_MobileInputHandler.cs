@@ -21,7 +21,7 @@ namespace NAwakening.RecollectionSnooker
         protected RaycastHit _raycastHit;
         protected Token _chosenToken;
         protected Token _contactToken;
-        protected bool _movingToken, _canBeLeft;
+        protected bool _movingToken;
 
         #endregion
 
@@ -98,14 +98,18 @@ namespace NAwakening.RecollectionSnooker
         {
             if (value.performed)
             {
-                if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()),out _raycastHit,50.0f,LayerMask.GetMask("Token")))
+                if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()),out _raycastHit,50.0f,LayerMask.GetMask("Movable")))
                 {
                     _chosenToken = _raycastHit.collider.gameObject.GetComponent<Token>();
-                    if (_chosenToken.IsAvalaibleForFlicking) {
-                        _goTouchCursor.SetActive(true);
-                        _goTouchCursor.transform.position = _raycastHit.point;
-                        _gameReferee.SetInteractedToken = _chosenToken;
-                        _gameReferee.GameStateMechanic(RS_GameStates.CONTACT_POINT_TOKEN);
+                    if (_chosenToken as Cargo || _chosenToken as ShipPivot)
+                    {
+                        if (_chosenToken.IsAvalaibleForFlicking && transform.position.y >= -0.2f)
+                        {
+                            _goTouchCursor.SetActive(true);
+                            _goTouchCursor.transform.position = _raycastHit.point;
+                            _gameReferee.SetInteractedToken = _chosenToken;
+                            _gameReferee.GameStateMechanic(RS_GameStates.CONTACT_POINT_TOKEN);
+                        }
                     }
                 }
                 else
@@ -123,7 +127,7 @@ namespace NAwakening.RecollectionSnooker
         {
             if (value.performed)
             {
-                if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()), out _raycastHit, 50.0f, LayerMask.GetMask("Token")))
+                if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()), out _raycastHit, 50.0f, LayerMask.GetMask("Movable")))
                 {
                     _contactToken = _raycastHit.collider.gameObject.GetComponent<Token>();
                     if (_contactToken == _chosenToken) 
@@ -146,7 +150,7 @@ namespace NAwakening.RecollectionSnooker
             {
                 if (!_movingToken)
                 {
-                    if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()), out _raycastHit, 20.0f, LayerMask.GetMask("Token")))
+                    if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()), out _raycastHit, 20.0f, LayerMask.GetMask("Movable")))
                     {
                         _chosenToken = _raycastHit.collider.gameObject.GetComponent<Token>();
                         if (_chosenToken.IsAvalaibleForFlicking)
@@ -161,44 +165,12 @@ namespace NAwakening.RecollectionSnooker
                     if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()), out _raycastHit, 20.0f, LayerMask.GetMask("ShipLoad")))
                     {
                         _chosenToken.gameObject.transform.position = _raycastHit.point;
-                        _canBeLeft = true;
-                    }
-                    else
-                    {
-                        _canBeLeft = false;
                     }
                 }
             }
             else if (value.canceled)
-            {
-                if (_movingToken && _canBeLeft) 
-                { 
-                    _movingToken = false;
-                    _canBeLeft = false;
-                    _chosenToken.IsAvalaibleForFlicking = false;
-                    _chosenToken.StateMechanic(TokenStateMechanic.SET_PHYSICS);
-                    _chosenToken.SetHighlight(false);
-                    _gameReferee.CargoLoaded();
-                }
-            }
-        }
-
-        protected void HandleTouchInAnchorShip(InputAction.CallbackContext value)
-        {
-            if (value.performed)
             {
                 
-            }
-            else if (value.canceled)
-            {
-                if (_gameReferee.MoveToLeaveCargoAtIsland)
-                {
-                    _gameReferee.GameStateMechanic(RS_GameStates.LEAVE_CARGO_AT_ISLAND);
-                }
-                else
-                {
-                    _gameReferee.GameStateMechanic(RS_GameStates.SHIFT_MONSTER_PARTS);
-                }
             }
         }
 
@@ -219,5 +191,20 @@ namespace NAwakening.RecollectionSnooker
         }
 
         #endregion HandleRotationActions
+
+        #region GetterandSetter
+
+        public bool MovingToken
+        {
+            get { return _movingToken; }
+            set { _movingToken = value; }
+        }
+
+        public Token GetChosenToken
+        {
+            get { return _chosenToken; }
+        }
+
+        #endregion
     }
 }

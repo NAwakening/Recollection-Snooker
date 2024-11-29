@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2389567374031007948}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1172338, y: 0.69732076, z: -0.1172338, w: 0.69732076}
-  m_LocalPosition: {x: -5.7800007, y: 2.5, z: -1.39}
+  m_LocalRotation: {x: 0.08953125, y: 0.70141584, z: -0.08953125, w: 0.70141584}
+  m_LocalPosition: {x: -5.7800007, y: 3.08, z: -1.39}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lerpVelocity: 0
-  _tokenPhysicalFSM: {fileID: 0}
+  _tokenPhysicalFSM: {fileID: 7935271704393664939}
   _freeLookCamera: {fileID: 0}
   _gameReferee: {fileID: 0}
   _flagTransformValues: {fileID: 7988736547720726149}
@@ -901,7 +901,12 @@ MonoBehaviour:
     isOutOfTheBoard: 0
     isBeingDragged: 0
   _contactedFlag: {fileID: 0}
-  _loadingCargoPositions: []
+  _loadingCargoPositions:
+  - {fileID: 2991503842396844027}
+  - {fileID: 2174931109998953823}
+  - {fileID: 5369312442212466779}
+  - {fileID: 8601650409312623041}
+  - {fileID: 4076056000874996922}
   _virtualCamera: {fileID: 2582538581848108238}
   cargoToLoad: {fileID: 0}
 --- !u!4 &4130708992001997888 stripped
@@ -919,6 +924,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4431362657186624690, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
   m_PrefabInstance: {fileID: 8390264366757211502}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7935271704393664939 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1904894473854887109, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
+  m_PrefabInstance: {fileID: 8390264366757211502}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3680328283952205115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acfcf3bf260284942b06a51ecfcb699c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7988736547720726149 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1922339317330308075, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}

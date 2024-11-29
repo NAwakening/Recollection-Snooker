@@ -34,7 +34,7 @@ namespace NAwakening.RecollectionSnooker
 
         #region References
 
-        [SerializeField, HideInInspector] protected RS_TokenFiniteStateMachine _tokenPhysicalFSM;
+        [SerializeField] protected RS_TokenFiniteStateMachine _tokenPhysicalFSM;
         [SerializeField] protected CinemachineFreeLook _freeLookCamera;
         [SerializeField] protected RS_GameReferee _gameReferee;
         [SerializeField] protected Transform _flagTransformValues;

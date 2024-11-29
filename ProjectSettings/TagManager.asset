@@ -8,6 +8,9 @@ TagManager:
   - Cargo
   - Flag
   - Phantom
+  - IgnoreTheme
+  - Button
+  - Island
   layers:
   - Default
   - TransparentFX
@@ -18,8 +21,8 @@ TagManager:
   - Floor
   - Token
   - ShipLoad
-  - 
-  - 
+  - Movable
+  - Phantom
   - 
   - 
   - 

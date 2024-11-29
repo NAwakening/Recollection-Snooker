@@ -52,7 +52,6 @@ namespace NAwakening.RecollectionSnooker
         [SerializeField] protected CinemachineFreeLook tableFreeLookCamera;
         [SerializeField] protected CinemachineFreeLook targetgroupCamera;
         [SerializeField] protected RS_CinemachineTargetGroup targetGroup;
-        [SerializeField] protected Transform cameraTransform;
 
         [Header("Flags")]
         [SerializeField] protected GameObject _flag;
@@ -62,6 +61,7 @@ namespace NAwakening.RecollectionSnooker
         [SerializeField] protected GameObject _radar;
         [SerializeField] protected UIManager _uiManager;
         [SerializeField] protected Transform _cargoParent;
+        [SerializeField] protected Transform _anchor;
 
         #endregion
 
@@ -77,6 +77,8 @@ namespace NAwakening.RecollectionSnooker
         protected int _cargoToLoad;
         protected RaycastHit _rayCastHit;
         protected Vector3 _tokenSpawnPosition;
+        protected Vector3 _cameraforward;
+        protected static string[] masks = { "Token", "Movable" };
 
         #endregion
 
@@ -296,10 +298,10 @@ namespace NAwakening.RecollectionSnooker
             {
                 _isAllCargoStill = false;
             }
-            //if (!shipPivot.IsStill)
-            //{
-            //    _isAllCargoStill = false;
-            //}
+            if (!shipPivot.IsStill)
+            {
+                _isAllCargoStill = false;
+            }
             return _isAllCargoStill;
         }
 
@@ -407,37 +409,52 @@ namespace NAwakening.RecollectionSnooker
             }
         }
 
-        protected bool Checkposition(Vector3 position, float radius)
+        protected bool CheckPosition(Vector3 position, float radius)
         {
-            if (Physics.SphereCast(new Vector3(position.x, position.y + 5.0f, position.z), radius, -transform.up ,out _rayCastHit, 5.0f))
+            //if (Physics.SphereCast(position + (Vector3.up * 5f), radius, Vector3.down ,out _rayCastHit, 6.0f))
+            //{
+            //    if(_rayCastHit.collider.gameObject.GetComponent<Token>() != null) // I hit a Token
+            //    {
+            //        return false;
+            //    }
+            //    else
+            //    {
+            //        if (Physics.SphereCast(position + (Vector3.down * 8.0f), radius, Vector3.up, out _rayCastHit, 9.0f))
+            //        {
+            //            if (_rayCastHit.collider.CompareTag("Phantom"))
+            //            {
+            //                return false;
+            //            }
+            //            else
+            //            {
+            //                return true;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    return true;
+            //}
+
+            Debug.DrawRay(position + (Vector3.up * 5f), Vector3.down * 6.0f, Color.red, 3f);
+            if (Physics.SphereCast(position + (Vector3.up * 5f), radius, Vector3.down, out _rayCastHit, 6.0f, LayerMask.GetMask(masks)))
             {
-                if(_rayCastHit.collider.gameObject.GetComponent<Token>() != null)
-                {
-                    return false;
-                }
-                else
-                {
-                    if (Physics.SphereCast(new Vector3(position.x, position.y - 7.0f, position.z), radius, transform.up, out _rayCastHit, 7.0f))
-                    {
-                        if (_rayCastHit.collider.CompareTag("Phantom"))
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
+                return false; //I hit a Token, Cargo and ShipPivot
             }
             else
             {
-                return true;
+                Debug.DrawRay(position + (Vector3.down * 8.0f), Vector3.up * 9.0f, Color.red, 3f);
+                if (Physics.SphereCast(position + (Vector3.down * 8.0f), radius, Vector3.up, out _rayCastHit, 9.0f, LayerMask.GetMask("Phantom")))
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
         protected void DebugInConsole(string value)
@@ -473,7 +490,7 @@ namespace NAwakening.RecollectionSnooker
                 while (true)
                 {
                     _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.3f, Random.Range(-15.0f, 15.0f));
-                    if (Checkposition(_tokenSpawnPosition, 0.7f))
+                    if (CheckPosition(_tokenSpawnPosition, 0.7f))
                     {
                         cargo.gameObject.transform.position = new Vector3 (_tokenSpawnPosition.x, _tokenSpawnPosition.y -5, _tokenSpawnPosition.z);
                         cargo.SetLerpPosition = _tokenSpawnPosition;
@@ -514,8 +531,10 @@ namespace NAwakening.RecollectionSnooker
             }
             ship.StateMechanic(TokenStateMechanic.SET_SPOOKY);
             monsterHead.StateMechanic(TokenStateMechanic.SET_SPOOKY);
-            //shipPivot.StateMechanic(TokenStateMechanic.SET_SPOOKY);
-            //island.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            island.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            shipPivot.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            shipPivot.SetHighlight(true);
+            shipPivot.IsAvalaibleForFlicking = true;
 
             ChangeCameraTo(tableFreeLookCamera);
 
@@ -526,27 +545,27 @@ namespace NAwakening.RecollectionSnooker
                     cargo.SetHighlight(true);
                     cargo.IsAvalaibleForFlicking = true;
                 }
-                if ((ship.GetHasCrew /*|| island.GetHasCrew*/) && cargo.cargoType == CargoTypes.CREW_MEMBER)
+                if ((ship.GetHasCrew || island.GetHasCrew) && cargo.cargoType == CargoTypes.CREW_MEMBER)
                 {
                     cargo.SetHighlight(false);
                     cargo.IsAvalaibleForFlicking = false;
                 }
-                else if ((ship.GetHasScrew /*|| island.GetHasScrew*/) && cargo.cargoType == CargoTypes.SCREW_PART)
+                else if ((ship.GetHasScrew || island.GetHasScrew) && cargo.cargoType == CargoTypes.SCREW_PART)
                 {
                     cargo.SetHighlight(false);
                     cargo.IsAvalaibleForFlicking = false;
                 }
-                else if ((ship.GetHasMedicine /*|| island.GetHasMedicine*/) && cargo.cargoType == CargoTypes.MEDICINE)
+                else if ((ship.GetHasMedicine || island.GetHasMedicine) && cargo.cargoType == CargoTypes.MEDICINE)
                 {
                     cargo.SetHighlight(false);
                     cargo.IsAvalaibleForFlicking = false;
                 }
-                else if ((ship.GetHasFuel /*|| island.GetHasFuel*/) && cargo.cargoType == CargoTypes.FUEL)
+                else if ((ship.GetHasFuel || island.GetHasFuel) && cargo.cargoType == CargoTypes.FUEL)
                 {
                     cargo.SetHighlight(false);
                     cargo.IsAvalaibleForFlicking = false;
                 }
-                else if ((ship.GetHasSupplies /*|| island.GetHasSupplies*/) && cargo.cargoType == CargoTypes.SUPPLIES)
+                else if ((ship.GetHasSupplies || island.GetHasSupplies) && cargo.cargoType == CargoTypes.SUPPLIES)
                 {
                     cargo.SetHighlight(false);
                     cargo.IsAvalaibleForFlicking = false;
@@ -577,6 +596,8 @@ namespace NAwakening.RecollectionSnooker
                 cargo.SetHighlight(false);
                 cargo.IsAvalaibleForFlicking = false;
             }
+            shipPivot.SetHighlight(false);
+            shipPivot.IsAvalaibleForFlicking = false;
             _interactedToken.IsAvalaibleForFlicking = true;
             _uiManager.ActivateContactPointPanel();
         }
@@ -640,8 +661,8 @@ namespace NAwakening.RecollectionSnooker
             }
             ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
-            //island.StateMechanic(TokenStateMechanic.SET_RIGID);
-            //shipPivot.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            island.StateMechanic(TokenStateMechanic.SET_RIGID);
+            shipPivot.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             _interactedToken.IsAvalaibleForFlicking = false;
             ChangeCameraTo(targetgroupCamera);
             targetGroup.AddMember(_interactedToken.gameObject.transform, 1f, 1f);
@@ -682,9 +703,7 @@ namespace NAwakening.RecollectionSnooker
             ChangeCameraTo(tableFreeLookCamera);
 
             _life--;
-
-            // Mover el contador
-
+            _uiManager.HeartLost();
             if(_life == 0)
             {
                 GameStateMechanic(RS_GameStates.FAILURE);
@@ -723,6 +742,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected void InitializeOrganizeCargoState()
         {
+            _uiManager.ActivateOrganizePanel();
             ChangeCameraTo(ship.GetVirtualCamera);
             ship.gameObject.transform.localRotation = Quaternion.Euler(0.0f, ship.gameObject.transform.localRotation.eulerAngles.y, 0.0f);
             ship.StateMechanic(TokenStateMechanic.SET_RIGID);
@@ -762,8 +782,8 @@ namespace NAwakening.RecollectionSnooker
                 monster.StateMechanic(TokenStateMechanic.SET_SPOOKY);
             }
             monsterHead.StateMechanic(TokenStateMechanic.SET_SPOOKY);
-            //island.StateMechanic(TokenStateMechanic.SET_SPOOKY);
-            //shipPivot.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            island.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+            shipPivot.StateMechanic(TokenStateMechanic.SET_SPOOKY);
         }
 
         protected void ExecutingOrganizeCargoState()
@@ -791,8 +811,9 @@ namespace NAwakening.RecollectionSnooker
             }
             ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
-            //island.StateMechanic(TokenStateMechanic.SET_RIGID);
-            //shipPivot.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            island.StateMechanic(TokenStateMechanic.SET_RIGID);
+            shipPivot.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            _uiManager.DeactivateAnchorPanel();
         }
 
         #endregion OrganizeCargo
@@ -802,6 +823,25 @@ namespace NAwakening.RecollectionSnooker
         protected void InitializeCanonByNavigationState()
         {
             _moveToNavigatingShip = true;
+            foreach (Cargo cargo in allCargoOfTheGame)
+            {
+                if (cargo.IsOnIsland)
+                {
+                    cargo.StateMechanic(TokenStateMechanic.SET_RIGID);
+                }
+                else
+                {
+                    cargo.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+                }
+            }
+            foreach (Token monster in allMonsterPartOfTheGame)
+            {
+                monster.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            }
+            ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
+            island.StateMechanic(TokenStateMechanic.SET_RIGID);
+            _interactedToken.IsAvalaibleForFlicking = false;
             ChangeCameraTo(targetgroupCamera);
             targetGroup.AddMember(shipPivot.gameObject.transform, 1f, 1f);
         }
@@ -862,17 +902,26 @@ namespace NAwakening.RecollectionSnooker
 
         protected void InitializeAnchorShipState()
         {
+            _uiManager.ActivateAnchorPanel();
             ChangeCameraTo(shipPivot.GetFreeLookCamera);
             _currentVirtualCamera.gameObject.GetComponent<CinemachineMobileInputProvider>().enableVerticalMovement = false;
             _TokenCamera = (CinemachineFreeLook)_currentVirtualCamera;
             _TokenCamera.m_YAxis.Value = 0.0f;
-            ship.transform.parent = cameraTransform;
-            ship.transform.position = new Vector3(3.61972f, 0f, 0f);
+            _anchor.position = shipPivot.transform.position;
+            //_cameraforward = new Vector3 (shipPivot.GetFreeLookCamera.transform.position.x, _anchor.position.y, shipPivot.GetFreeLookCamera.transform.position.z);
+            _cameraforward = Camera.main.transform.forward;
+            _cameraforward.y = 0f;
+            _anchor.transform.forward = _cameraforward.normalized;
+            ship.transform.parent = _anchor;
+            ship.transform.localPosition = - _anchor.right * 2.0f;
+            ship.transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
         }
 
         protected void ExecutingAnchorShipState()
         {
-
+            _cameraforward = Camera.main.transform.forward;
+            _cameraforward.y = 0f;
+            _anchor.transform.forward = _cameraforward.normalized;
         }
 
         protected void FinalizeAnchorShipState()
@@ -888,6 +937,7 @@ namespace NAwakening.RecollectionSnooker
             }
             ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             ship.transform.parent = null;
+            _uiManager.DeactivateAnchorPanel();
         }
 
         #endregion AnchorShip
@@ -903,32 +953,33 @@ namespace NAwakening.RecollectionSnooker
                     points++;
                     cargo.IsLoaded = false;
                     cargo.IsOnIsland = true;
+                    cargo.gameObject.transform.localRotation = island.gameObject.transform.localRotation;
                     cargo.StateMechanic(TokenStateMechanic.SET_RIGID);
                     ship.EliminateCargo(cargo);
-                    //island.AddCargo(cargo);
-                    //switch (cargo.cargoType)
-                    //{
-                    //    case CargoTypes.CREW_MEMBER:
-                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[0]);
-                    //        cargo.SetCanLerp = true;
-                    //        break;
-                    //    case CargoTypes.FUEL:
-                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[1]);
-                    //        cargo.SetCanLerp = true;
-                    //        break;
-                    //    case CargoTypes.MEDICINE:
-                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[2]);
-                    //        cargo.SetCanLerp = true;
-                    //        break;
-                    //    case CargoTypes.SUPPLIES:
-                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[3]);
-                    //        cargo.SetCanLerp = true;
-                    //        break;
-                    //    case CargoTypes.SCREW_PART:
-                    //        cargo.SetLerpPosition(island.GetLoadingCargoPositions[4]);
-                    //        cargo.SetCanLerp = true;
-                    //        break;
-                    //}
+                    island.AddCargo(cargo);
+                    switch (cargo.cargoType)
+                    {
+                        case CargoTypes.CREW_MEMBER:
+                            cargo.SetLerpPosition = island.GetLoadingCargoPositions[0].position;
+                            cargo.SetCanLerp = true;
+                            break;
+                        case CargoTypes.FUEL:
+                            cargo.SetLerpPosition = island.GetLoadingCargoPositions[1].position;
+                            cargo.SetCanLerp = true;
+                            break;
+                        case CargoTypes.MEDICINE:
+                            cargo.SetLerpPosition = island.GetLoadingCargoPositions[2].position;
+                            cargo.SetCanLerp = true;
+                            break;
+                        case CargoTypes.SUPPLIES:
+                            cargo.SetLerpPosition = island.GetLoadingCargoPositions[3].position;
+                            cargo.SetCanLerp = true;
+                            break;
+                        case CargoTypes.SCREW_PART:
+                            cargo.SetLerpPosition = island.GetLoadingCargoPositions[4].position;
+                            cargo.SetCanLerp = true;
+                            break;
+                    }
                 }
             }
 
@@ -959,28 +1010,35 @@ namespace NAwakening.RecollectionSnooker
         protected void InitializeShiftMonsterPartsState()
         {
             ChangeCameraTo(tableFreeLookCamera);
+            StartCoroutine(MoveMonsterParts());
+        }
+
+        protected IEnumerator MoveMonsterParts()
+        {
             foreach (MonsterPart monster in allMonsterPartOfTheGame)
             {
                 while (true)
                 {
                     _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.3f, Random.Range(-15.0f, 15.0f));
-                    if (Checkposition(_tokenSpawnPosition, 2f))
+                    if (CheckPosition(_tokenSpawnPosition, 3f))
                     {
                         monster.SetLerpPosition = _tokenSpawnPosition;
                         monster.SetPhantomCopy();
                         monster.StartLerp = true;
+                        yield return new WaitForSeconds(1f);
                         break;
                     }
                 }
             }
-            while (true)
+            while (true) //Monster Head
             {
                 _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.3f, Random.Range(-10.0f, 10.0f));
-                if (Checkposition(_tokenSpawnPosition, 4f))
+                if (CheckPosition(_tokenSpawnPosition, 6f))
                 {
                     monsterHead.SetLerpPosition = _tokenSpawnPosition;
                     monsterHead.SetPhantomCopy();
                     monsterHead.StartLerp = true;
+                    yield return new WaitForSeconds(1f);
                     break;
                 }
             }

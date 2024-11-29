@@ -104,6 +104,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1922339317330308075, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
   m_PrefabInstance: {fileID: 1132766491801552933}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1573988764256414944 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1904894473854887109, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
+  m_PrefabInstance: {fileID: 1132766491801552933}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5249920566490114160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acfcf3bf260284942b06a51ecfcb699c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4538085976083862637 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3549645994455276616, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
@@ -138,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lerpVelocity: 0
-  _tokenPhysicalFSM: {fileID: 0}
+  _tokenPhysicalFSM: {fileID: 1573988764256414944}
   _freeLookCamera: {fileID: 4538085976083862637}
   _gameReferee: {fileID: 0}
   _flagTransformValues: {fileID: 1519367237967897550}
@@ -148,3 +159,4 @@ MonoBehaviour:
     isBeingDragged: 0
   _contactedFlag: {fileID: 0}
   monsterPartType: 0
+  _phantomCopy: {fileID: 0}

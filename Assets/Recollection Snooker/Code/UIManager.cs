@@ -11,9 +11,11 @@ namespace NAwakening.RecollectionSnooker
         #region References
 
         [SerializeField] protected RS_GameReferee _gameReferee;
-        [SerializeField] protected GameObject _contactpointPanel, _flickTokenPanel;
-        [SerializeField] protected RawImage[] _hearts;
+        [SerializeField] protected GameObject _contactpointPanel, _flickTokenPanel, _organicaCargoPanel, _anchorShipPanel;
+        [SerializeField] protected Image[] _hearts;
+        [SerializeField] protected Sprite _emptyHeart;
         [SerializeField] protected GameObject _pausePanel, _pauseButton;
+        [SerializeField] protected RS_MobileInputHandler _mobileInputHandler;
 
         #endregion
 
@@ -34,6 +36,30 @@ namespace NAwakening.RecollectionSnooker
         public void ReturnToContactPoint()
         {
             _gameReferee.GameStateMechanic(RS_GameStates.CONTACT_POINT_TOKEN);
+        }
+
+        public void ConfirmCargoLoad()
+        {
+            if (_mobileInputHandler.MovingToken)
+            {
+                _mobileInputHandler.MovingToken = false;
+                _mobileInputHandler.GetChosenToken.SetHighlight(false);
+                _mobileInputHandler.GetChosenToken.IsAvalaibleForFlicking = false;
+                _mobileInputHandler.GetChosenToken.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+                _gameReferee.CargoLoaded();
+            }
+        }
+
+        public void ConfirmAnchor()
+        {
+            if (_gameReferee.MoveToLeaveCargoAtIsland)
+            {
+                _gameReferee.GameStateMechanic(RS_GameStates.LEAVE_CARGO_AT_ISLAND);
+            }
+            else
+            {
+                _gameReferee.GameStateMechanic(RS_GameStates.SHIFT_MONSTER_PARTS);
+            }
         }
 
         public void Pause()
@@ -64,6 +90,16 @@ namespace NAwakening.RecollectionSnooker
             _flickTokenPanel.SetActive(true);
         }
 
+        public void ActivateOrganizePanel()
+        {
+            _organicaCargoPanel.SetActive(true);
+        }
+
+        public void ActivateAnchorPanel()
+        {
+            _anchorShipPanel.SetActive(true);
+        }
+
         public void DeactivateContactPointPanel()
         {
             _contactpointPanel.SetActive(false);
@@ -74,6 +110,16 @@ namespace NAwakening.RecollectionSnooker
             _flickTokenPanel.SetActive(false);
         }
 
+        public void DeactivateOrganizePanel()
+        {
+            _organicaCargoPanel.SetActive(false);
+        }
+
+        public void DeactivateAnchorPanel()
+        {
+            _anchorShipPanel.SetActive(false);
+        }
+
         public void ReloadScene(int sceneId)
         {
             SceneManager.LoadScene(sceneId);
@@ -81,7 +127,7 @@ namespace NAwakening.RecollectionSnooker
 
         public void HeartLost()
         {
-            _hearts[_heartid].color = Color.black;
+            _hearts[_heartid].sprite = _emptyHeart;
             _heartid++;
         }
 
