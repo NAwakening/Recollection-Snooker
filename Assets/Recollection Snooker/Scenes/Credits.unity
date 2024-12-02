@@ -292,8 +292,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16, y: -125}
-  m_SizeDelta: {x: 430.715, y: 100.974}
+  m_AnchoredPosition: {x: 0, y: -96}
+  m_SizeDelta: {x: 590.633, y: 100.974}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &364408882
 MonoBehaviour:
@@ -315,7 +315,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: casualbunker
+  m_text: 'casualbunker
+
+    (Unity Asset Store)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b42c1c94f928bb443bef68651990ad72, type: 2}
   m_sharedMaterial: {fileID: -8645441937483377131, guid: b42c1c94f928bb443bef68651990ad72, type: 2}
@@ -1507,7 +1509,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16, y: -125}
+  m_AnchoredPosition: {x: 0, y: -90}
   m_SizeDelta: {x: 430.715, y: 100.974}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1720769582
@@ -1530,7 +1532,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: linafis studio
+  m_text: linafis studio (Dafont)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b42c1c94f928bb443bef68651990ad72, type: 2}
   m_sharedMaterial: {fileID: -8645441937483377131, guid: b42c1c94f928bb443bef68651990ad72, type: 2}

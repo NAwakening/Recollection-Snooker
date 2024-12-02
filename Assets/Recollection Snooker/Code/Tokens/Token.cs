@@ -92,14 +92,14 @@ namespace NAwakening.RecollectionSnooker
             {
                 _gameReferee = GameObject.FindAnyObjectByType<RS_GameReferee>();
             }
-            if (_flagTransformValues == null)
-            {
-                _flagTransformValues = transform.GetChild(1).transform;
-            }
-            if(_freeLookCamera == null)
-            {
-                _freeLookCamera = transform.GetComponentInChildren<CinemachineFreeLook>();
-            }
+            //if (_flagTransformValues == null)
+            //{
+            //    _flagTransformValues = transform.GetChild(1).transform;
+            //}
+            //if(_freeLookCamera == null)
+            //{
+            //    _freeLookCamera = transform.GetComponentInChildren<CinemachineFreeLook>();
+            //}
         }
 
         protected virtual void InitializeToken()

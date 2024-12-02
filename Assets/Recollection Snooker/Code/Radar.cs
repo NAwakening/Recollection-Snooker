@@ -22,7 +22,7 @@ namespace NAwakening.RecollectionSnooker
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<Cargo>() != null && !other.GetComponent<Cargo>().IsLoaded)
+            if (other.GetComponent<Cargo>() != null && (!other.GetComponent<Cargo>().IsLoaded || !other.GetComponent<Cargo>().IsOnIsland))
             {
                 _sphereCollider.radius = 0.5f;
                 _gameReferee.DeactivateRadar(other.GetComponent<Cargo>());
