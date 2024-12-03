@@ -68,11 +68,11 @@ namespace NAwakening.RecollectionSnooker
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.GetComponent<Cargo>() != null && other.GetComponent<Cargo>().IsLoaded)
-            {
-                other.GetComponent<Cargo>().IsLoaded= false;
-                EliminateCargo(other.GetComponent<Cargo>());
-            }
+            //if (other.GetComponent<Cargo>() != null && other.GetComponent<Cargo>().IsLoaded)
+            //{
+            //    other.GetComponent<Cargo>().IsLoaded= false;
+            //    EliminateCargo(other.GetComponent<Cargo>());
+            //}
         }
 
         #endregion

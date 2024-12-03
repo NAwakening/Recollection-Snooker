@@ -80,6 +80,10 @@ namespace NAwakening.RecollectionSnooker
             {
                 isStill = _rigidbody.GetAccumulatedForce().magnitude < 0.1f && _rigidbody.velocity.magnitude < 0.1f && _rigidbody.angularVelocity.magnitude < 0.1f;
             }
+            else if (_physicalState == TokenPhysicalStates.STATIC)
+            {
+                isStill = true;
+            }
             else
             {
                 isStill = false;

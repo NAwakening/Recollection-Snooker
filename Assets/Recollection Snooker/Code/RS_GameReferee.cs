@@ -661,7 +661,7 @@ namespace NAwakening.RecollectionSnooker
             {
                 monster.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             }
-            ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            ship.StateMechanic(TokenStateMechanic.SET_RIGID);
             monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
             island.StateMechanic(TokenStateMechanic.SET_RIGID);
             shipPivot.StateMechanic(TokenStateMechanic.SET_PHYSICS);
@@ -813,7 +813,7 @@ namespace NAwakening.RecollectionSnooker
             {
                 monster.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             }
-            ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            ship.StateMechanic(TokenStateMechanic.SET_RIGID);
             monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
             island.StateMechanic(TokenStateMechanic.SET_RIGID);
             walls.StateMechanic(TokenStateMechanic.SET_RIGID);
@@ -843,7 +843,7 @@ namespace NAwakening.RecollectionSnooker
             {
                 monster.StateMechanic(TokenStateMechanic.SET_PHYSICS);
             }
-            ship.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+            ship.StateMechanic(TokenStateMechanic.SET_RIGID);
             monsterHead.StateMechanic(TokenStateMechanic.SET_RIGID);
             island.StateMechanic(TokenStateMechanic.SET_RIGID);
             _interactedToken.IsAvalaibleForFlicking = false;
