@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: materialAssets.highlightPhysicalMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 92eb4f7c7166c6a458faf1c70d3f0035, type: 2}
+    - target: {fileID: 2839422964015599993, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5514206467825403805, guid: 1657605ff76657740afc97d5b2df72ff, type: 3}
     - target: {fileID: 4666169921966714433, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -112,6 +116,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fuel
       objectReference: {fileID: 0}
+    - target: {fileID: 7132250596572325218, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5514206467825403805, guid: 1657605ff76657740afc97d5b2df72ff, type: 3}
     - target: {fileID: 8108191689996965517, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.42431697

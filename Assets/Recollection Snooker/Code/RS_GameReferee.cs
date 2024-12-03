@@ -927,7 +927,7 @@ namespace NAwakening.RecollectionSnooker
             _cameraforward.y = 0f;
             _anchor.transform.forward = _cameraforward.normalized;
             ship.transform.parent = _anchor;
-            ship.transform.localPosition = - _anchor.right * 2.0f;
+            ship.transform.localPosition = _anchor.right * 2.0f;
             ship.transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
         }
 
@@ -1027,6 +1027,7 @@ namespace NAwakening.RecollectionSnooker
             //StartCoroutine(MoveMonsterParts());
             foreach (MonsterPart monster in allMonsterPartOfTheGame)
             {
+                monster.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
                 while (true)
                 {
                     _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.3f, Random.Range(-15.0f, 15.0f));

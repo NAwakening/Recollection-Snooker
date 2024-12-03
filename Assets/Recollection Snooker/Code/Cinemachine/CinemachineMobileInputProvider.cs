@@ -26,8 +26,8 @@ namespace NAwakening.RecollectionSnooker
                 {
                     switch (axis)
                     {
-                        case 0: return enableVerticalMovement ? action.ReadValue<Vector3>().y : 0f;
-                        case 1: return action.ReadValue<Vector3>().x;
+                        case 0: return action.ReadValue<Vector3>().y;
+                        case 1: return enableVerticalMovement ? action.ReadValue<Vector3>().x : 0f;
                         case 2: return action.ReadValue<float>();
                     }
                 }

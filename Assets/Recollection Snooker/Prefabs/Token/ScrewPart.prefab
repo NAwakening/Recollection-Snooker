@@ -12,6 +12,26 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 145464e75f118af408f6bad687a86675, type: 2}
+    - target: {fileID: 861740277609183207, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.4218572
+      objectReference: {fileID: 0}
+    - target: {fileID: 861740277609183207, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.13941517
+      objectReference: {fileID: 0}
+    - target: {fileID: 861740277609183207, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.28111625
+      objectReference: {fileID: 0}
+    - target: {fileID: 1159586044322615562, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.14706548
+      objectReference: {fileID: 0}
+    - target: {fileID: 1159586044322615562, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.29654226
+      objectReference: {fileID: 0}
     - target: {fileID: 1620403605238206611, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
       propertyPath: materialAssets.ghostMaterial
       value: 
@@ -28,6 +48,10 @@ PrefabInstance:
       propertyPath: materialAssets.highlightPhysicalMaterial
       value: 
       objectReference: {fileID: 2100000, guid: ef4736ed6d1b79e4eb08623e9b6aa136, type: 2}
+    - target: {fileID: 2839422964015599993, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5514206467825403805, guid: 1657605ff76657740afc97d5b2df72ff, type: 3}
     - target: {fileID: 4666169921966714433, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -83,7 +107,23 @@ PrefabInstance:
     - target: {fileID: 7132250596572325218, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 8524874503923877264, guid: 9de4d048d6b571c4e8219aa60583f21f, type: 3}
+      objectReference: {fileID: 5514206467825403805, guid: 1657605ff76657740afc97d5b2df72ff, type: 3}
+    - target: {fileID: 8108191689996965517, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.42431697
+      objectReference: {fileID: 0}
+    - target: {fileID: 8108191689996965517, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.13173912
+      objectReference: {fileID: 0}
+    - target: {fileID: 8108191689996965517, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8555912
+      objectReference: {fileID: 0}
+    - target: {fileID: 8108191689996965517, guid: ed34dfc5d7e05644cb2c9994dd8a9cf8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.2656383
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

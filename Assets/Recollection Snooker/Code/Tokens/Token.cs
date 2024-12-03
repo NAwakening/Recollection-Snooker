@@ -132,6 +132,7 @@ namespace NAwakening.RecollectionSnooker
                     _flagTransformValues.position = _flagTransform.position;
                     _flagTransformValues.Rotate(_flagTransformValues.right, -90f, Space.Self);
                     _tokenPhysicalFSM.ThrowTokenAtSpecifcPosition(_flagTransformValues.forward * (Mathf.Abs(_contactedFlag.DeltaXDegrees + 1f) * 5.0f), other.gameObject.transform.position);
+                    Debug.DrawRay(other.gameObject.transform.GetChild(0).position, _flagTransformValues.forward * (Mathf.Abs(_contactedFlag.DeltaXDegrees + 1f) * 5.0f), Color.yellow, 5.0f);
 
                     if (this as Cargo)
                     {
