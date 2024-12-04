@@ -80,6 +80,7 @@ namespace NAwakening.RecollectionSnooker
         protected Vector3 _tokenSpawnPosition;
         protected Vector3 _cameraforward;
         protected static string[] masks = { "Token", "Movable" };
+        protected int attempts;
 
         #endregion
 
@@ -308,6 +309,7 @@ namespace NAwakening.RecollectionSnooker
 
         protected override void InitializeGameReferee()
         {
+            Time.timeScale = 1.0f;
             _gameState = RS_GameStates.SHOW_THE_LAYOUT_TO_THE_PLAYER;
             InitializeState();
         }
@@ -442,18 +444,10 @@ namespace NAwakening.RecollectionSnooker
             //    return true;
             //}
 
-            Debug.DrawRay(position + (Vector3.up * 5f), Vector3.down * 6.0f, Color.red, 3f);
-            if (Physics.SphereCast(position + (Vector3.up * 5f), radius, Vector3.down, out _rayCastHit, 6.0f, LayerMask.GetMask(masks)))
+            Debug.DrawRay(position + (Vector3.up * 11f), Vector3.down * 12.0f, Color.red, 3f);
+            if (Physics.SphereCast(position + (Vector3.up * 11f), radius, Vector3.down, out _rayCastHit, 12.0f, LayerMask.GetMask(masks)))
             {
                 return false; //I hit a Token, Cargo and ShipPivot
-            }
-            else
-            {
-                Debug.DrawRay(position + (Vector3.down * 10.0f), Vector3.up * 11.0f, Color.red, 3f);
-                if (Physics.SphereCast(position + (Vector3.down * 8.0f), radius, Vector3.up, out _rayCastHit, 9.0f, LayerMask.GetMask("Phantom")))
-                {
-                    return false;
-                }
             }
             return true;
         }
@@ -495,7 +489,7 @@ namespace NAwakening.RecollectionSnooker
                     {
                         cargo.gameObject.transform.position = new Vector3 (_tokenSpawnPosition.x, _tokenSpawnPosition.y -5, _tokenSpawnPosition.z);
                         cargo.SetLerpPosition = _tokenSpawnPosition;
-                        cargo.SetCanLerp = true;
+                        cargo.CanLerp = true;
                         break;
                     }
                 }
@@ -897,7 +891,7 @@ namespace NAwakening.RecollectionSnooker
             }
             ship.StateMechanic(TokenStateMechanic.SET_SPOOKY);
             ship.SetLerpPosition = shipPivot.gameObject.transform.position;
-            ship.SetCanLerp = true;
+            ship.CanLerp = true;
         }
 
         protected void ExecutingNavigatingShipState()
@@ -975,23 +969,23 @@ namespace NAwakening.RecollectionSnooker
                     {
                         case CargoTypes.CREW_MEMBER:
                             cargo.SetLerpPosition = island.GetLoadingCargoPositions[0].position;
-                            cargo.SetCanLerp = true;
+                            cargo.CanLerp = true;
                             break;
                         case CargoTypes.FUEL:
                             cargo.SetLerpPosition = island.GetLoadingCargoPositions[1].position;
-                            cargo.SetCanLerp = true;
+                            cargo.CanLerp = true;
                             break;
                         case CargoTypes.MEDICINE:
                             cargo.SetLerpPosition = island.GetLoadingCargoPositions[2].position;
-                            cargo.SetCanLerp = true;
+                            cargo.CanLerp = true;
                             break;
                         case CargoTypes.SUPPLIES:
                             cargo.SetLerpPosition = island.GetLoadingCargoPositions[3].position;
-                            cargo.SetCanLerp = true;
+                            cargo.CanLerp = true;
                             break;
                         case CargoTypes.SCREW_PART:
                             cargo.SetLerpPosition = island.GetLoadingCargoPositions[4].position;
-                            cargo.SetCanLerp = true;
+                            cargo.CanLerp = true;
                             break;
                     }
                 }
@@ -1024,47 +1018,48 @@ namespace NAwakening.RecollectionSnooker
         protected void InitializeShiftMonsterPartsState()
         {
             ChangeCameraTo(tableFreeLookCamera);
-            //StartCoroutine(MoveMonsterParts());
-            foreach (MonsterPart monster in allMonsterPartOfTheGame)
-            {
-                monster.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-                while (true)
-                {
-                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.3f, Random.Range(-15.0f, 15.0f));
-                    if (CheckPosition(_tokenSpawnPosition, 3f))
-                    {
-                        monster.SetLerpPosition = _tokenSpawnPosition;
-                        monster.SetPhantomCopy();
-                        monster.StartLerp = true;
-                        break;
-                    }
-                }
-            }
-            while (true) //Monster Head
-            {
-                _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.3f, Random.Range(-10.0f, 10.0f));
-                if (CheckPosition(_tokenSpawnPosition, 4f))
-                {
-                    monsterHead.SetLerpPosition = _tokenSpawnPosition;
-                    monsterHead.SetPhantomCopy();
-                    monsterHead.StartLerp = true;
-                    break;
-                }
-            }
-            GameStateMechanic(RS_GameStates.CHOOSE_TOKEN);
+            StartCoroutine(MoveMonsterParts());
+            //foreach (MonsterPart monster in allMonsterPartOfTheGame)
+            //{
+            //    monster.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            //    while (true)
+            //    {
+            //        _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.3f, Random.Range(-15.0f, 15.0f));
+            //        if (CheckPosition(_tokenSpawnPosition, 3f))
+            //        {
+            //            monster.SetLerpPosition = _tokenSpawnPosition;
+            //            monster.SetPhantomCopy();
+            //            monster.StartLerp = true;
+            //            break;
+            //        }
+            //    }
+            //}
+            //while (true) //Monster Head
+            //{
+            //    _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.3f, Random.Range(-10.0f, 10.0f));
+            //    if (CheckPosition(_tokenSpawnPosition, 4f))
+            //    {
+            //        monsterHead.SetLerpPosition = _tokenSpawnPosition;
+            //        monsterHead.SetPhantomCopy();
+            //        monsterHead.StartLerp = true;
+            //        break;
+            //    }
+            //}
+            //GameStateMechanic(RS_GameStates.CHOOSE_TOKEN);
         }
 
         protected IEnumerator MoveMonsterParts()
         {
             foreach (MonsterPart monster in allMonsterPartOfTheGame)
             {
+                monster.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
                 while (true)
                 {
-                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.7f, Random.Range(-15.0f, 15.0f));
-                    if (CheckPosition(_tokenSpawnPosition, 3f))
+                    _tokenSpawnPosition = new Vector3(Random.Range(-15.0f, 15.0f), 0.3f, Random.Range(-17.0f, 17.0f));
+                    if (CheckPosition(_tokenSpawnPosition, 1f))
                     {
                         monster.SetLerpPosition = _tokenSpawnPosition;
-                        monster.SetPhantomCopy();
+                        monster.StateMechanic(TokenStateMechanic.SET_SPOOKY);
                         monster.StartLerp = true;
                         yield return new WaitForSeconds(1f);
                         break;
@@ -1073,14 +1068,23 @@ namespace NAwakening.RecollectionSnooker
             }
             while (true) //Monster Head
             {
-                _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.7f, Random.Range(-10.0f, 10.0f));
-                if (CheckPosition(_tokenSpawnPosition, 4f))
+                attempts = 500;
+                _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.3f, Random.Range(-12.0f, 12.0f));
+                attempts--;
+                if (CheckPosition(_tokenSpawnPosition, 5f))
                 {
                     monsterHead.SetLerpPosition = _tokenSpawnPosition;
-                    monsterHead.SetPhantomCopy();
+                    monsterHead.StateMechanic(TokenStateMechanic.SET_SPOOKY);
                     monsterHead.StartLerp = true;
                     yield return new WaitForSeconds(1f);
                     break;
+                }
+                if (attempts == 0)
+                {
+                    _tokenSpawnPosition = monsterHead.gameObject.transform.position;
+                    monsterHead.SetLerpPosition = _tokenSpawnPosition;
+                    monsterHead.StateMechanic(TokenStateMechanic.SET_SPOOKY);
+                    monsterHead.StartLerp = true;
                 }
             }
             GameStateMechanic(RS_GameStates.CHOOSE_TOKEN);

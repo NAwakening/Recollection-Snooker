@@ -240,59 +240,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8826472426915162903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5110256610359867183
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 309276005214573137}
-  - component: {fileID: 7118265130914091984}
-  m_Layer: 7
-  m_Name: CargoVolume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &309276005214573137
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5110256610359867183}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.507, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4130708992001997888}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &7118265130914091984
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5110256610359867183}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.0026608, y: 2.8784328, z: 3.975125}
-  m_Center: {x: -0.004767418, y: 1.9392164, z: 0.009590745}
 --- !u!1 &5242521750964088666
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,6 +760,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7992067658462204212, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 8547471881871753710, guid: effb8c13a64515c4685e6dc06eb5bf90, type: 3}
     - target: {fileID: 8486914710154572435, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
       propertyPath: _flagTransformValues
       value: 
@@ -863,9 +814,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5558300717458133294, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8826472426915162903}
-    - targetCorrespondingSourceObject: {fileID: 5558300717458133294, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 309276005214573137}
     - targetCorrespondingSourceObject: {fileID: 3965310713072767411, guid: f10daa9a6c2cec848b5b54d240472219, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5276560806203504991}

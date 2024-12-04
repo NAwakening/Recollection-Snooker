@@ -191,9 +191,10 @@ namespace NAwakening.RecollectionSnooker
             get { return _freeLookCamera; }
         }
 
-        public bool SetCanLerp
+        public bool CanLerp
         {
             set { _canLerp = value; }
+            get { return _canLerp; }
         }
 
         public Vector3 SetLerpPosition

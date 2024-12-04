@@ -28,12 +28,6 @@ namespace NAwakening.RecollectionSnooker
 
         #endregion
 
-        #region References
-
-        [SerializeField] protected Transform _phantomCopy;
-
-        #endregion
-
         #region RuntimeVariables
 
         protected bool _startLerp;
@@ -47,11 +41,11 @@ namespace NAwakening.RecollectionSnooker
             base.InitializeToken();
         }
 
-        void FixedUpdate()
+        void Update()
         {
             if (_startLerp)
             {
-                transform.position = Vector3.Lerp(transform.position, new Vector3 (transform.position.x, transform.position.y - 5, transform.position.z), _lerpVelocity * Time.fixedDeltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3 (transform.position.x, transform.position.y - 5, transform.position.z), _lerpVelocity * Time.deltaTime);
                 if (Vector3.SqrMagnitude(transform.position - new Vector3(transform.position.x, - 5, transform.position.z)) < 0.1f)
                 {
                     _canLerp = true;
@@ -61,10 +55,18 @@ namespace NAwakening.RecollectionSnooker
             }
             if (_canLerp)
             {
-                transform.position = Vector3.Lerp(transform.position, _lerpPosition, _lerpVelocity * Time.fixedDeltaTime);
+                transform.position = Vector3.Lerp(transform.position, _lerpPosition, _lerpVelocity * Time.deltaTime);
                 if (Vector3.SqrMagnitude(transform.position - _lerpPosition) < 0.1f)
                 {
                     _canLerp = false;
+                    if (monsterPartType == MonsterPartType.LIMB)
+                    {
+                        StateMechanic(TokenStateMechanic.SET_PHYSICS);
+                    }
+                    else
+                    {
+                        StateMechanic(TokenStateMechanic.SET_RIGID);
+                    }
                 }
             }
         }
@@ -80,16 +82,6 @@ namespace NAwakening.RecollectionSnooker
 
         #region RuntimeMethods
 
-
-        #endregion
-
-        #region PublicMethods
-
-        public void SetPhantomCopy()
-        {
-            _phantomCopy.position = new Vector3 (_lerpPosition.x, _lerpPosition.y - 5, _lerpPosition.z);
-            _phantomCopy.localRotation = transform.localRotation;
-        }
 
         #endregion
 

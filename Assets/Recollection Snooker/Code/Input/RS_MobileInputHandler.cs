@@ -101,7 +101,7 @@ namespace NAwakening.RecollectionSnooker
                 if (Physics.Raycast(_camera.ScreenPointToRay(value.ReadValue<Vector2>()),out _raycastHit,50.0f,LayerMask.GetMask("Movable")))
                 {
                     _chosenToken = _raycastHit.collider.gameObject.GetComponent<Token>();
-                    if (_chosenToken.IsAvalaibleForFlicking && transform.position.y >= 0.0f)
+                    if (_chosenToken.IsAvalaibleForFlicking && !_chosenToken.CanLerp)
                     {
                         _goTouchCursor.SetActive(true);
                         _goTouchCursor.transform.position = _raycastHit.point;
@@ -179,6 +179,7 @@ namespace NAwakening.RecollectionSnooker
         {
             if (value.performed)
             {
+                _goTouchCursor.SetActive(false);
                 _gameReferee.GetFlag.transform.Rotate(new Vector3((value.ReadValue<Vector3>() != null ? value.ReadValue<Vector3>().x : value.ReadValue<Vector2>().x) * -4.0f, 0f, 0f), Space.Self);
             }
             else if (value.canceled)

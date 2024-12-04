@@ -81,6 +81,10 @@ namespace NAwakening.RecollectionSnooker
             {
                 _gameReferee.MoveToLeaveCargoAtIsland = true;
             }
+            if (other.gameObject.CompareTag("MonsterLimb"))
+            {
+                _gameReferee.SetMoveToMoveCounter = true;
+            }
             else if (other.gameObject.GetComponent<Token>() != null)
             {
                 _gameReferee.GetTargetGroup.AddMember(other.gameObject.transform, 1f, 1f);
