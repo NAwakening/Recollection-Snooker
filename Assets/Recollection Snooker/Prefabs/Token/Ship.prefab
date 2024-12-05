@@ -100,7 +100,7 @@ Transform:
   m_GameObject: {fileID: 3766023105122105257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.257, y: 2.59, z: 0}
+  m_LocalPosition: {x: 0.257, y: 2.492, z: 0}
   m_LocalScale: {x: 4, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -843,7 +843,6 @@ MonoBehaviour:
   _tokenPhysicalFSM: {fileID: 7935271704393664939}
   _freeLookCamera: {fileID: 0}
   _gameReferee: {fileID: 0}
-  _flagTransformValues: {fileID: 7988736547720726149}
   _gameplayAttributes:
     isAvailableForFlicking: 0
     isOutOfTheBoard: 0

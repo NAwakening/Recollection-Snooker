@@ -915,6 +915,7 @@ namespace NAwakening.RecollectionSnooker
             _currentVirtualCamera.gameObject.GetComponent<CinemachineMobileInputProvider>().enableVerticalMovement = false;
             _TokenCamera = (CinemachineFreeLook)_currentVirtualCamera;
             _TokenCamera.m_YAxis.Value = 0.0f;
+            shipPivot.transform.localEulerAngles = Vector3.zero;
             _anchor.position = shipPivot.transform.position;
             //_cameraforward = new Vector3 (shipPivot.GetFreeLookCamera.transform.position.x, _anchor.position.y, shipPivot.GetFreeLookCamera.transform.position.z);
             _cameraforward = Camera.main.transform.forward;

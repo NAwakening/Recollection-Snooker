@@ -60,7 +60,7 @@ namespace NAwakening.RecollectionSnooker
 
         void FixedUpdate()
         {
-            
+
         }
 
         private void OnCollisionEnter(Collision other)
