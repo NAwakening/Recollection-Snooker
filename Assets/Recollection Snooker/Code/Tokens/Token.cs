@@ -37,7 +37,6 @@ namespace NAwakening.RecollectionSnooker
         [SerializeField] protected RS_TokenFiniteStateMachine _tokenPhysicalFSM;
         [SerializeField] protected CinemachineFreeLook _freeLookCamera;
         [SerializeField] protected RS_GameReferee _gameReferee;
-        [SerializeField] protected Transform _flagTransformValues;
 
         #endregion
 
@@ -46,7 +45,6 @@ namespace NAwakening.RecollectionSnooker
         [Header("Runtime Variables")]
         [SerializeField] protected GameplayAttributes _gameplayAttributes;
 
-        protected Transform _flagTransform;
         [SerializeField] protected Flag _contactedFlag;
         protected bool _canLerp;
         protected Vector3 _lerpPosition;
@@ -127,12 +125,8 @@ namespace NAwakening.RecollectionSnooker
             {
                 if (other.gameObject.CompareTag("Flag"))
                 {
-                    _flagTransform = other.gameObject.transform;
-                    _flagTransformValues.forward = _flagTransform.forward;
-                    _flagTransformValues.position = _flagTransform.position;
-                    _flagTransformValues.Rotate(_flagTransformValues.right, -90f, Space.Self);
-                    _tokenPhysicalFSM.ThrowTokenAtSpecifcPosition(_flagTransformValues.forward * (Mathf.Abs(_contactedFlag.DeltaXDegrees + 1f) * 5.0f), other.gameObject.transform.position);
-                    Debug.DrawRay(other.gameObject.transform.GetChild(0).position, _flagTransformValues.forward * (Mathf.Abs(_contactedFlag.DeltaXDegrees + 1f) * 5.0f), Color.yellow, 5.0f);
+                    _tokenPhysicalFSM.ThrowTokenAtSpecifcPosition(other.gameObject.transform.GetChild(0).forward * (Mathf.Abs(_contactedFlag.DeltaXDegrees + 1f) * 5.0f), other.gameObject.transform.position);
+                    Debug.DrawRay(other.gameObject.transform.GetChild(0).position, other.gameObject.transform.GetChild(0).forward * (Mathf.Abs(_contactedFlag.DeltaXDegrees + 1f) * 5.0f), Color.yellow, 5.0f);
 
                     if (this as Cargo)
                     {

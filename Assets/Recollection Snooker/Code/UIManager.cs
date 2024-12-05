@@ -45,7 +45,7 @@ namespace NAwakening.RecollectionSnooker
                 _mobileInputHandler.MovingToken = false;
                 _mobileInputHandler.GetChosenToken.SetHighlight(false);
                 _mobileInputHandler.GetChosenToken.IsAvalaibleForFlicking = false;
-                _mobileInputHandler.GetChosenToken.StateMechanic(TokenStateMechanic.SET_PHYSICS);
+                _mobileInputHandler.GetChosenToken.StateMechanic(TokenStateMechanic.SET_RIGID);
                 _gameReferee.CargoLoaded();
             }
         }

@@ -954,11 +954,15 @@ namespace NAwakening.RecollectionSnooker
 
         protected void InitializeLeaveCargoAtIslandState()
         {
+            StartCoroutine(WaitForCargoToLoadOnIsland());
+        }
+
+        IEnumerator WaitForCargoToLoadOnIsland()
+        {
             foreach (Cargo cargo in allCargoOfTheGame)
             {
                 if (cargo.IsLoaded)
                 {
-                    points++;
                     cargo.IsLoaded = false;
                     cargo.IsOnIsland = true;
                     cargo.gameObject.transform.localRotation = island.gameObject.transform.localRotation;
@@ -988,6 +992,8 @@ namespace NAwakening.RecollectionSnooker
                             cargo.CanLerp = true;
                             break;
                     }
+                    yield return new WaitForSeconds(2f);
+                    points++;
                 }
             }
 
@@ -1068,7 +1074,7 @@ namespace NAwakening.RecollectionSnooker
             }
             while (true) //Monster Head
             {
-                attempts = 500;
+                attempts = 100;
                 _tokenSpawnPosition = new Vector3(Random.Range(-10.0f, 10.0f), 0.3f, Random.Range(-12.0f, 12.0f));
                 attempts--;
                 if (CheckPosition(_tokenSpawnPosition, 5f))
@@ -1076,7 +1082,7 @@ namespace NAwakening.RecollectionSnooker
                     monsterHead.SetLerpPosition = _tokenSpawnPosition;
                     monsterHead.StateMechanic(TokenStateMechanic.SET_SPOOKY);
                     monsterHead.StartLerp = true;
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(1.5f);
                     break;
                 }
                 if (attempts == 0)
